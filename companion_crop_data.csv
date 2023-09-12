@@ -1,0 +1,229 @@
+crop,additional factor,companion crop
+rice,nitrogen,Azolla
+rice,green manure,Azolla
+rice,soil fertility,Clover
+rice,structure,Clover
+rice,natural fertilizer,Fish
+rice,deter pests,Sesame
+rice,soil nitrogen,Mungbean
+rice,ground cover,Watermelon
+rice,soil moisture,Watermelon
+rice,control algae,Duckweed
+rice,forage for ducks,Duckweed
+rice,attract pollinators,Sunflowers
+rice,provide shade,Sunflowers
+rice,reduce weed growth,Taro
+rice,repels pests,Lemongrass
+rice,adds aroma,Lemongrass
+maize,nitrogen,Beans
+maize,ground cover,Squash
+maize,deter pests,Squash
+maize,attracts beneficial insects,Sunflowers
+maize,repels beetles,Cucumber
+maize,repels pests,Amaranth
+maize,deter pests,Potatoes
+maize,improves maize growth,Marjoram
+maize,attracts pollinators,Borage
+maize,deters aphids and beetles,Nasturtium
+maize,repels pests,Oregano
+jute,deter pests,Marigolds
+jute,attracts beneficial insects,Cilantro
+jute,control nematodes,Mustard
+jute,attract pollinators,Sunflowers
+jute,nitrogen,Beans
+jute,deter jute beetles,Radishes
+jute,improves jute growth,Coriander
+jute,deters pests,Dill
+jute,repels pests,Mint
+jute,deter pests,Basil
+cotton,attract beneficial insects,Peanuts
+cotton,attract pollinators.,Sunflowers
+cotton,provides shade,Okra
+cotton,deter pests,Marigolds
+cotton,nitrogen,Beans
+cotton,provides support,Sorghum
+cotton,provides shade,Sorghum
+cotton,deter pests,Basil
+cotton,deters aphids,Nasturtium
+cotton,attracts beneficial insects,Cilantro
+cotton,improves soil fertility,Clover
+coconut,shade for young coconuts,Cocoa
+coconut,vines can be grown on coconut trees,Vanilla
+coconut,deters coconut pests,Turmeric
+coconut,provides ground cover,Pineapple
+coconut,provides additional canopy cover,Banana
+coconut,vines can be grown on coconut trees,Pepper
+coconut,provides shade and ground cover,Papaya
+coconut,intercropped in coconut plantations,Ginger
+coconut,control weeds,Taro
+coconut,repels pests,Lemongrass
+papaya,deter pests,Basil
+papaya,deter pests,Marigolds
+papaya,deters aphids and beetles,Nasturtium
+papaya,attracts beneficial insects,Cilantro
+papaya,nitrogen,Beans
+papaya,deter beetles,Radishes
+papaya,attract pollinators,Sunflowers
+papaya,provides shade for papaya,Okra
+papaya,control papaya pests,Mustard
+papaya,intercropped with papaya,Spinach
+orange,attracts pollinators,Marjoram
+orange,deter citrus pests,Basil
+orange,deters aphids,Nasturtium
+orange,repels citrus pests,Lavender
+orange,deter aphids and mites,Chives
+orange,provides nutrient-rich mulch,Comfrey
+orange,attracts beneficial insects,Dill
+orange,improves soil fertility,Clover
+orange,deters ants and flies,Tansy
+orange,repels citrus pests,Thyme
+apple,deter apple scab,Chives
+apple,deters aphids and beetles,Nasturtium
+apple,attracts beneficial insects,Dill
+apple,helps deter apple pests,Basil
+apple,improves soil fertility,Clover
+apple,deter apple pests,Marigolds
+apple,attracts pollinators,Calendula
+apple,repels apple pests,Thyme
+apple,deters apple moths,Lavender
+apple,deters flying insects,Tansy
+muskmelon,deters aphids,Nasturtium
+muskmelon,deter cucumber beetles,Radishes
+muskmelon,nitrogen,Beans
+muskmelon,provides support for muskmelon vines,Corn
+muskmelon,deter common pests,Marigolds
+muskmelon,improves muskmelon flavor,Oregano
+muskmelon,attract pollinators,Sunflowers
+muskmelon,improves muskmelon growth,Borage
+muskmelon,enhances muskmelon aroma,Tarragon
+muskmelon,provide ground cover,Cucumbers
+watermelon,deter watermelon beetles,Radishes
+watermelon,nitrogen,Beans
+watermelon,deter watermelon pests,Marigolds
+watermelon,deters aphids,Nasturtium
+watermelon,attract pollinators,Sunflowers
+watermelon,provides support for watermelon vines,Corn
+watermelon,helps deter watermelon pests,Basil
+watermelon,enhances watermelon aroma,Tarragon
+watermelon,provide ground cover,Cucumbers
+watermelon,repels watermelon pests,Mint
+grapes,deters grape pests,Rosemary
+grapes,helps deter grape pests,Basil
+grapes,repels pests and improves flavor,Mint
+grapes,deters aphids,Nasturtium
+grapes,improves soil fertility,Clover
+grapes,deter mildew and aphids,Chives
+grapes,repels grape moths,Lavender
+grapes,deter pests and nematodes,Marigolds
+grapes,improves grape flavor,Oregano
+grapes,attract pollinators,Sunflowers
+mango,helps deter mango pests,Garlic
+mango,repels insects and enhances flavor,Basil
+mango,deter mango pests,Marigolds
+mango,provides ground cover and shade,Papaya
+mango,deters mango pests,Tumeric
+mango,natural pesticide,Neem
+mango,repels pests,Lemongrass
+mango,helps control weeds,Taro
+mango,nitrogen,Beans
+mango,improves mango growth,Paprika
+banana,provides ground cover,Sweet Potato
+banana,nitrogen,Beans
+banana,provides shade and ground cover,Papaya
+banana,deters banana pests,Tumeric
+banana,intercropped with bananas,Ginger
+banana,helps control weeds,Taro
+banana,provides nutrient-rich mulch,Comfrey
+banana,deters aphids,Nasturtium
+banana,can grow on banana trees,Vanilla
+banana,helps deter banana pests,Basil
+pomegranate,repels pests and enhances flavor,Mint
+pomegranate,deter pomegranate pests,Marigolds
+pomegranate,deters aphids,Nasturtium
+pomegranate,helps deter pests and enhances growth,Basil
+pomegranate,improves pomegranate flavor,Oregano
+pomegranate,repels pests and adds fragrance,Lavender
+pomegranate,deter aphids and improve flavor,Chives
+pomegranate,enhances pomegranate aroma,Tarragon
+pomegranate,nitrogen,Beans
+pomegranate,attract pollinators,Sunflowers
+lentil,repels lentil aphids,Cabbage
+lentil,improves lentil growth,Chickpea
+lentil,attract pollinators,Sunflowers
+lentil,attracts beneficial insects,Cilantro
+lentil,deter lentil pests,Marigolds
+lentil,helps control lentil pests,Mustard
+lentil,can be intercropped with lentils,Spinach
+lentil,deter lentil beetles,Radishes
+lentil,nitrogen,Beans
+lentil,improves soil fertility,Clover
+blackgram,provides support for blackgram,Maize
+blackgram,attract pollinators,Sunflowers
+blackgram,fixes nitrogen for blackgram,Cowpea
+blackgram,improves blackgram flavor,Coriander
+blackgram,deter blackgram pests,Radishes
+blackgram,helps control aphids,Mustard
+blackgram,provide ground cover,Cucumbers
+blackgram,improves soil health,Chickpea
+blackgram,intercropped with blackgram,Lentil
+blackgram,provide shade,Tamarind
+mungbean,attracts beneficial insects,Cilantro
+mungbean,deter mungbean pests,Marigolds
+mungbean,deter mungbean beetles,Radishes
+mungbean,nitrogen,Beans
+mungbean,attract pollinators,Sunflowers
+mungbean,deters mungbean pests,Ginger
+mungbean,improves mungbean growth,Coriander
+mungbean,provide shade,Tamarind
+mungbean,provides ground cover,Papaya
+mungbean,improves soil health,Chickpea
+mothbeans,deter mothbean pests,Marigolds
+mothbeans,attract pollinators,Sunflowers
+mothbeans,deter mothbean beetles,Radishes
+mothbeans,intercropped with mothbeans,Lentil
+mothbeans,improves soil health,Mungbean
+mothbeans,improves mothbean growth,Chickpea
+mothbeans,attracts beneficial insects,Cilantro
+mothbeans,helps control mothbean pests,Mustard
+mothbeans,provide shade,Tamarind
+mothbeans,provides ground cover,Papaya
+pigeonpeas,provides support and shade,Sorghum
+pigeonpeas,deter pigeonpea pests,Marigolds
+pigeonpeas,attract pollinators,Sunflowers
+pigeonpeas,fixes nitrogen for pigeonpeas,Cowpea
+pigeonpeas,deters pigeonpea pests,Tumeric
+pigeonpeas,helps deter pests,Basil
+pigeonpeas,improves soil health,Chickpea
+pigeonpeas,attracts beneficial insects,Cilantro
+pigeonpeas,fix nitrogen for pigeonpeas,Beans
+pigeonpeas,provide shade,Tamarind
+kidneybeans,attracts beneficial insects,Cilantro
+kidneybeans,deter kidney bean pests,Marigolds
+kidneybeans,helps control aphids,Mustard
+kidneybeans,attract pollinators,Sunflowers
+kidneybeans,deter kidney bean beetles,Radishes
+kidneybeans,intercropped with kidney beans,Spinach
+kidneybeans,provide shade,Tamarind
+kidneybeans,support for kidney beans,Maize
+kidneybeans,deters kidney bean pests,Tumeric
+kidneybeans,helps deter kidney bean pests,Basil
+chickpea,attracts beneficial insects,Cilantro
+chickpea,deter chickpea pests,Marigolds
+chickpea,deter chickpea beetles,Radishes
+chickpea,fix nitrogen for chickpeas,Beans
+chickpea,attract pollinators,Sunflowers
+chickpea,helps control aphids,Mustard
+chickpea,provide shade,Tamarind
+chickpea,enhances chickpea growth,Paprika
+chickpea,repels chickpea pests,Thyme
+chickpea,helps deter chickpea pests,Basil
+coffee,can be grown on coffee trees,Vanilla
+coffee,provide shade for coffee,Cacao
+coffee,provides additional canopy cover,Banana
+coffee,can be grown on coffee trees,Pepper
+coffee,can provide shade for coffee,Citrus
+coffee,can be intercropped with coffee,Cardamom
+coffee,can be grown under coffee canopy,Ginger
+coffee,provide shade,Avocado
+coffee,can be grown with coffee,Macadamia
+coffee,provide shade,Tamarind
