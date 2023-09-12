@@ -8,9 +8,10 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from flask import Flask,request,render_template
+from flask import Flask, request, jsonify,render_template
 from sklearn.metrics import classification_report
 from sklearn.neighbors import KNeighborsClassifier
+import csv
 
 
 df=pd.read_csv("Crop_recommendation.csv")
@@ -76,8 +77,10 @@ plt.xticks([i for i in range(1,11)]);
 # print("Prediction Crop is",targets[knn_instance.predict(X_input_scaled)[0]])
 # =============================================================================
 
+crop=""
+
 app = Flask(__name__)
-@app.route('/',methods=['GET'])
+@app.route("/")
 def index():
     return render_template('index.html')
 
@@ -92,7 +95,7 @@ def predict():
     rainfall = request.form['Rainfall']
 
     feature_list = [N, P, K, temp, humidity, ph, rainfall]
-    #single_pred = np.array(feature_list).reshape(1, -1)
+    global crop 
 
     try:
         X_input_scaled = scaler_instance.transform(pd.DataFrame(np.array(feature_list)).T)
@@ -102,12 +105,49 @@ def predict():
         crop=None;
        
     if crop is not None:
-        result = "{} is the best crop to be cultivated right there".format(crop.upper())
+        result = format(crop.upper())
     else:
         result = "Sorry, we could not determine the best crop to be cultivated with the provided data."
     return render_template('index.html',result = result)
 
 
+
+companionCrop=""
+
+
+
+@app.route("/findCompanionCrop",methods=['POST'])
+def findCompanionCrop():
+    predictedcrop = crop 
+    selectedAdditionalFactor = request.form.get("selectedAdditionalFactor")
+   
+    csv_file = "companion_crop_data.csv"
+    if predictedcrop==" ":
+        predictedcrop=None
+    if selectedAdditionalFactor==" ":
+        selectedAdditionalFactor=None    
+        
+    print("predictedcrop "+predictedcrop)
+    print("selectedAdditionalFactor "+selectedAdditionalFactor)
+    try:
+        with open(csv_file, mode="r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row["crop"] == predictedcrop:
+                    print(predictedcrop)
+                    if row["additional factor"] == selectedAdditionalFactor:
+                        companionCrop=str(row["companion crop"])
+                        print(companionCrop)
+    except: 
+          print ("Exception Occured")
+          companionCrop=None;
+          
+    print(companionCrop)      
+    if companionCrop is not None:
+      companionCropResult = "To improve the selected factor you can plant {} along with main crop.".format(companionCrop.upper())
+    else:
+       companionCropResult = "Sorry, we could not determine the companion crop"       
+    return jsonify({"companionCropResult": companionCropResult})
 
 
 # python main
