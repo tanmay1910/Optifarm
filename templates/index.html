@@ -1,132 +1,355 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  </head>
-  <style>
-		h1 {
-			color: mediumseagreen;
-			text-align: center;
-		}
 
-		.warning {
-			color: red;
-			font-weight: bold;
-			text-align: center;
-		}
-		.card{
-		margin-left:410px;
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bootstrap demo</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<style>
+	h1 {
+		color: mediumseagreen;
+		text-align: center;
+	}
+
+	.warning {
+		color: red;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	.card {
+		margin-left: 410px;
 		margin-top: 20px;
 		color: white;
-		}
-		.container{
-		background:#edf2f7;
+	}
+
+	.container {
+		background: #edf2f7;
 		font-weight: bold;
-		padding-bottom:10px;
+		padding-bottom: 10px;
 		border-radius: 15px;
-		}
-	</style>
+	}
 
+	.custom-select {
+		position: relative;
+		font-family: Arial;
+	}
 
+	.select-selected {
+		background-color: rgb(243, 246, 248);
+	}
 
+	/* Style the arrow inside the select element: */
+	.select-selected:after {
+		position: absolute;
+		content: "";
+		top: 14px;
+		right: 10px;
+		width: 0;
+		height: 0;
+		border: 6px solid transparent;
+		border-color: #575957 transparent transparent transparent;
+	}
 
-  <body style="background:#BCBBB8">
-  <!--=======================navbar=====================================================-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Crop Recommendation</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">About</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
+	/* Point the arrow upwards when the select box is open (active): */
+	.select-selected.select-arrow-active:after {
+		border-color: transparent transparent #695d5d transparent;
+		top: 7px;
+	}
 
-<!--==========================================================================================-->
-  <div class="container my-3 mt-3">
-      <h1 class="text-success">Crop Recommendation System <span class="text-success">🌱</span></h1>
+	/* style the items (options), including the selected item: */
+	.select-items div,
+	.select-selected {
+		color: #1e5683;
+		padding: 8px 16px;
+		border: 1px solid transparent;
+		border-color: transparent transparent rgba (0, 0, 0, 0.1) transparent;
+		cursor: pointer;
+		margin: 5px 31px;
+	}
 
-<!--      adding form-->
-      <form action="/predict" method="POST">
-          <div class="row">
-              <div class="col-md-4">
+	/* Style items (options): */
+	.select-items {
+		position: absolute;
+		background-color: DodgerBlue;
+		top: 100%;
+		left: 0;
+		right: 0;
+		z-index: 99;
+	}
+
+	/* Hide the items when the select box is closed: */
+	.select-hide {
+		display: none;
+	}
+
+	.select-items div:hover,
+	.same-as-selected {
+		background-color: rgba (0, 0, 0, 0.1);
+	}
+
+	.btn-submit {
+		background-color: #4CAF50;
+		border: none;
+		color: rgb(243, 234, 234);
+		padding: 12px 30px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		cursor: pointer;
+		margin: 5px 86px;
+	}
+
+	.style-me {
+		width: 50%;
+		display: inline-block;
+		justify-content: space-between;
+	}
+
+	.button1:hover {
+		background-color: #3e8e41;
+	}
+	.companioncrop{
+		display: inline-block;
+		align-items: center;
+		border-color: #695d5d;
+		border-radius: 20px;
+		padding:10px;
+		margin:auto;
+	}
+</style>
+
+<body style="background:#BCBBB8">
+	<!--=======================navbar=====================================================-->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Crop Recommendation</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="#">home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Contact</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled">About</a>
+					</li>
+				</ul>
+				<form class="d-flex" role="search">
+					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-success" type="submit">Search</button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<!--==========================================================================================-->
+	<div class="container my-3 mt-3">
+		<h1 class="text-success">Crop Recommendation System <span class="text-success">🌱</span></h1>
+
+		<!--      adding form-->
+		<form action="/predict" method="POST">
+			<div class="row">
+				<div class="col-md-4">
 					<label for="Nitrogen">Nitrogen</label>
-					<input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control" required step="0">
+					<input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control"
+						required step="0">
 				</div>
-               <div class="col-md-4">
+				<div class="col-md-4">
 					<label for="Phosporus">Phosphorus</label>
-					<input type="number" id="Phosporus" name="Phosporus" placeholder="Enter Phosphorus" class="form-control" required step="00">
+					<input type="number" id="Phosporus" name="Phosporus" placeholder="Enter Phosphorus"
+						class="form-control" required step="00">
 				</div>
 				<div class="col-md-4">
 					<label for="Potassium">Potassium</label>
-					<input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" class="form-control" required step="0">
+					<input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium"
+						class="form-control" required step="0">
 				</div>
-          </div>
+			</div>
 
-          <div class="row mt-4">
+			<div class="row mt-4">
 				<div class="col-md-4">
 					<label for="Temperature">Temperature</label>
-					<input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" class="form-control" required step="0">
+					<input type="number" step="0.01" id="Temperature" name="Temperature"
+						placeholder="Enter Temperature in °C" class="form-control" required step="0">
 				</div>
 				<div class="col-md-4">
 					<label for="Humidity">Humidity</label>
-					<input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" class="form-control" required step="0">
+					<input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %"
+						class="form-control" required step="0">
 				</div>
 				<div class="col-md-4">
 					<label for="pH">pH</label>
-					<input type="number" step="0.01" id="Ph" name="Ph" placeholder="Enter pH value" class="form-control" required step="0">
+					<input type="number" step="0.01" id="Ph" name="Ph" placeholder="Enter pH value" class="form-control"
+						required step="0">
 				</div>
 			</div>
 
-          <div class="row mt-4">
+			<div class="row mt-4">
 				<div class="col-md-4">
 					<label for="Rainfall">Rainfall</label>
-					<input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" class="form-control" required>
+					<input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm"
+						class="form-control" required>
 				</div>
 			</div>
 
 
 
-           <div class="row mt-4">
+			<div class="row mt-4">
 
-           <div class="col-md-12 text-center">
-				<button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>
+				<div class="col-md-12 text-center">
+					<button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>
+				</div>
 			</div>
-			</div>
-      </form>
+		</form>
 
-
-
-       {% if result %}
+		{% if result %}
 		<div class="card bg-dark" style="width: 18rem;">
-		  <img src="{{url_for('static', filename='img.jpg')}}" class="card-img-top" alt="...">
-		  <div class="card-body">
-			<h5 class="card-title">Recommend Crop for cultivation is:</h5>
-			<p class="card-text">{{ result }}</p>
-		  </div>
-		</div>
-	   {% endif %}
-  </div>
+			<img src="{{url_for('static', filename='img.jpg')}}" class="card-img-top" alt="...">
+			<div class="card-body">
+				<h5 class="card-title">Recommend Crop for cultivation is:</h5>
+				<p class="card-text">{{ result }} is the best crop to be cultivated right there</p>
+			</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  </body>
+			<div class="style-me">
+				<div style="width:200px;">
+					<select id="selectedAdditionalFactor" class="select-selected">
+						<option value="">--Please choose factor--</option>
+					</select>
+				</div>
+				<div>
+					<button id="send" class="btn-submit button1">Send</button>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		<div class="companioncrop">
+			<p><span id="companionCropResult"></span></p>
+		</div>
+		
+
+		<script>
+			var result = "{{ result }}";
+			var options = [];
+			switch (result) {
+				case "RICE":
+					options = ["nitrogen", "green manure", "soil fertility", "structure", "natural fertilizer", "deter pests", "soil nitrogen", "ground cover", "soil moisture", "control algae", "forage for ducks", "attract pollinators", "provide shade", "reduce weed growth", "repels pests", "adds aroma"];
+					break;
+				case "MAIZE":
+					options = ["nitrogen", "ground cover", "deter pests", "attracts beneficial insects", "repels beetles", "repels pests", "deter pests", "improves maize growth", "attracts pollinators", "deters aphids and beetles", "repels pests"];
+					break;
+				case "JUTE":
+					options = ["deter pests", "attracts beneficial insects", "control nematodes", "attract pollinators", "nitrogen", "deter jute beetles", "improves jute growth", "deters pests", "repels pests", "deter pests"];
+					break;
+				case "COTTON":
+					options = ["attract beneficial insects", "attract pollinators", "provides shade", "deter pests", "nitrogen", "provides support", "provides shade", "deter pests", "deters aphids", "attracts beneficial insects", "improves soil fertility"];
+					break;
+				case "COCONUT":
+					options = ["shade for young coconuts", "vines can be grown on coconut trees", "deters coconut pests", "provides ground cover", "provides additional canopy cover", "vines can be grown on coconut trees", "provides shade and ground cover", "intercropped in coconut plantations", "control weeds", "repels pests"];
+					break;
+				case "PAPAYA":
+					options = ["deter pests", "deter pests", "deters aphids and beetles", "attracts beneficial insects", "nitrogen", "deter beetles", "attract pollinators", "provides shade for papaya", "control papaya pests", "intercropped with papaya"];
+					break;
+				case "ORANGE":
+					options = ["attracts pollinators", "deter citrus pests", "deters aphids", "repels citrus pests", "deter aphids and mites", "provides nutrient-rich mulch", "attracts beneficial insects", "improves soil fertility", "deters ants and flies", "repels citrus pests"];
+					break;
+				case "APPLE":
+					options = ["deter apple scab", "deters aphids and beetles", "attracts beneficial insects", "helps deter apple pests", "improves soil fertility", "deter apple pests", "attracts pollinators", "repels apple pests", "deters apple moths", "deters flying insects"];
+					break;
+				case "MUSKMELON":
+					options = ["deters aphids", "deter cucumber beetles", "nitrogen", "provides support for muskmelon vines", "deter common pests", "improves muskmelon flavor", "attract pollinators", "improves muskmelon growth", "enhances muskmelon aroma", "provide ground cover"];
+					break;
+				case "WATERMELON":
+					options = ["deter watermelon beetles", "nitrogen", "deter watermelon pests", "deters aphids", "attract pollinators", "provides support for watermelon vines", "helps deter watermelon pests", "enhances watermelon aroma", "provide ground cover", "repels watermelon pests"];
+					break;
+				case "GRAPES":
+					options = ["deters grape pests", "helps deter grape pests", "repels pests and improves flavor", "deters aphids", "improves soil fertility", "deter mildew and aphids", "repels grape moths", "deter pests and nematodes", "improves grape flavor", "attract pollinators"];
+					break;
+				case "MANGO":
+					options = ["helps deter mango pests", "repels insects and enhances flavor", "deter mango pests", "provides ground cover and shade", "deters mango pests", "natural pesticide", "repels pests", "helps control weeds", "nitrogen", "improves mango growth"];
+					break;
+				case "BANANA":
+					options = ["provides ground cover", "nitrogen", "provides shade and ground cover", "deters banana pests", "intercropped with bananas", "helps control weeds", "provides nutrient-rich mulch", "deters aphids", "can grow on banana trees", "helps deter banana pests"];
+					break;
+				case "POMETRANATE":
+					options = ["repels pests and enhances flavor", "deter pomegranate pests", "deters aphids", "helps deter pests and enhances growth", "improves pomegranate flavor", "repels pests and adds fragrance", "deter aphids and improve flavor", "enhances pomegranate aroma", "nitrogen", "attract pollinators"];
+					break;
+				case "LENTIL":
+					options = ["repels lentil aphids", "improves lentil growth", "attract pollinators", "attracts beneficial insects", "deter lentil pests", "helps control lentil pests", "can be intercropped with lentils", "deter lentil beetles", "nitrogen", "improves soil fertility"];
+					break;
+				case "BLACKGRAM":
+					options = ["provides support for blackgram", "attract pollinators", "fixes nitrogen for blackgram", "improves blackgram flavor", "deter blackgram pests", "helps control aphids", "provide ground cover", "improves soil health", "intercropped with blackgram", "provide shade"];
+					break;
+				case "MUNGBEAN":
+					options = ["attracts beneficial insects", "deter mungbean pests","deter mungbean beetles", "nitrogen", "attract pollinators", "deters mungbean pests", "improves mungbean growth", "provide shade", "provides ground cover", "improves soil health"];
+					break;
+				case "MOTHABEANS":
+					options = ["deter mothbean pests", "attract pollinators", "deter mothbean beetles", "intercropped with mothbeans", "improves soil health", "improves mothbean growth", "attracts beneficial insects", "helps control mothbean pests", "provide shade", "provides ground cover"];
+					break;
+				case "PIGEONPEAS":
+					options = ["provides support and shade", "deter pigeonpea pests", "attract pollinators", "fixes nitrogen for pigeonpeas", "deters pigeonpea pests", "helps deter pests", "improves soil health", "attracts beneficial insects", "fix nitrogen for pigeonpeas", "provide shade"];
+					break;
+				case "KIDNEYBEANS":
+					options = ["attracts beneficial insects", "deter kidney bean pests", "helps control aphids", "attract pollinators", "deter kidney bean beetles", "intercropped with kidney beans", "provide shade", "support for kidney beans", "deters kidney bean pests", "helps deter kidney bean pests"];
+					break;
+				case "CHICKPEA":
+					options = ["attracts beneficial insects", "deter chickpea pests", "deter chickpea beetles", "fix nitrogen for chickpeas", "attract pollinators", "helps control aphids", "provide shade", "enhances chickpea growth", "repels chickpea pests", "helps deter chickpea pests"];
+					break;
+				case "COFFEE":
+					options = ["can be grown on coffee trees", "provide shade for coffee", "provides additional canopy cover", "can be grown on coffee trees", "can provide shade for coffee", "can be intercropped with coffee", "can be grown under coffee canopy", "provide shade", "can be grown with coffee", "provide shade"];
+					break;
+				default:
+					options = [];
+			}
+
+			var select = document.getElementById("selectedAdditionalFactor");
+			for (var i = 0; i < options.length; i++) {
+				var option = document.createElement("option");
+				option.text = options[i];
+				select.add(option);
+			}
+
+			var select = document.getElementById("selectedAdditionalFactor");
+			var selectedValue = select.value;
+
+			function sendFruit() {
+				// get the fruit name from the input element using jQuery
+				var selectedAdditionalFactor = $("#selectedAdditionalFactor").val();
+				// check if the fruit name is not empty
+				if (selectedAdditionalFactor) {
+					// create an AJAX request using jQuery
+					$.ajax({
+						url: "/findCompanionCrop", // the URL of the backend route
+						method: "POST", // the HTTP method
+						data: { selectedAdditionalFactor: selectedAdditionalFactor }, // the data to send as a form
+						success: function (response) {
+							// handle the response from the backend
+							// get the color name from the response JSON data
+							var companionCropResult = response.companionCropResult;
+							// display it in the HTML page using jQuery
+							$("#companionCropResult").text(companionCropResult);
+						}
+					});
+				}
+			}
+
+			// attach a click event handler to the button using jQuery
+			$("#send").click(sendFruit);
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+			crossorigin="anonymous"></script>
+</body>
+
 </html>
