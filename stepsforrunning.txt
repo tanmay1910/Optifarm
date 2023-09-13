@@ -3,9 +3,14 @@
 
 download anaconda 
 
-Project steps to 
+Setup steps
 
-https://www.youtube.com/watch?v=p_tpQSY1aTs
+*** set openAI api key as environment variable
+    open cmd
+	    setx OPENAI_API_KEY “<yourkey>” 
+	reopen the cmd to check	
+        echo %OPENAI_API_KEY%		
+	please ping me incase you cannot generate yours
 
 anacoda prompt
  1 create new environment(https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment)
@@ -24,7 +29,7 @@ see if packages are getting downloaded or not
    activate envname (activate cropprediction)
 6.command --- pip install jsonify
   or any library yopu want to install
-7.python cropprediction.py
+7.python KNNModel.py
 
 
 reusing the same environment 
