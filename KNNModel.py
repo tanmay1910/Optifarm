@@ -7,6 +7,7 @@ Created on Fri Sep  1 01:17:12 2023
 import pandas as pd
 import numpy as np
 import openai
+import os
 from flask import Flask, request, jsonify,render_template
 from sklearn.naive_bayes import GaussianNB
 import csv
@@ -93,7 +94,7 @@ def findAlternateCrop():
 @app.route("/callGPT",methods=['POST'])
 def callGPT():
     try:
-        openai.api_key = "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"
+        openai.api_key = os.environ["OPENAI_API_KEY"]
         prompt = request.form['promptFromUser']
         model = "text-davinci-003"
         response = openai.Completion.create(engine=model, prompt=prompt, max_tokens=4000)
