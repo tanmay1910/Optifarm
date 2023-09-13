@@ -93,7 +93,7 @@ def findAlternateCrop():
 @app.route("/callGPT",methods=['POST'])
 def callGPT():
     try:
-        openai.api_key = "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"
+        openai.api_key = "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"
         prompt = request.form['promptFromUser']
         model = "text-davinci-003"
         response = openai.Completion.create(engine=model, prompt=prompt, max_tokens=4000)
