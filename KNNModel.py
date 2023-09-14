@@ -107,7 +107,7 @@ def callGPT():
         generated_textFromGPT = generated_text
     else:
         generated_textFromGPT = "Sorry ChatGPT is not available please try after some time."
-    return render_template('index.html',generated_textFromGPT = generated_textFromGPT)
+    return jsonify({"generated_textFromGPT": generated_textFromGPT})
 
 
 companionCrop=""
@@ -143,9 +143,76 @@ def findCompanionCrop():
     if companionCrop is not None:
       companionCropResult = "To improve the selected factor you can plant {} along with the main crop.".format(companionCrop.upper())
     else:
-       companionCropResult = "Sorry, we could not determine the companion crop"       
+       companionCropResult = "Sorry, we could not determine the companion crop" 
     return jsonify({"companionCropResult": companionCropResult})
 
+
+@app.route("/getProtectionStrategyAndCostUsingSeason",methods=['POST'])
+def getProtectionStrategyAndCostUsingSeason():
+    try:
+        season = request.form.get("season")
+        excel_file = 'CPS_Season.xlsx'  # Replace with the path to your Excel file
+        season_df = pd.read_excel(excel_file)
+        crop_name=crop.capitalize()
+        # Filter rows based on crop and season
+        filtered_df = season_df[(season_df['Crop'] == crop_name) & (season_df['Season'] == season)]
+
+        if not filtered_df.empty:
+            # Get the first row (assuming there's only one matching row)
+            row = filtered_df.iloc[0]
+
+            # Extract protection strategy and cost values
+            protection_strategy = row['Crop Protection Strategy']
+            pest_management_cost = row['Cost per Acre (Pest Management) (INR)']
+            disease_control_cost = row['Cost per Acre (Disease Control) (INR)']
+        else:
+            protection_strategy=''
+            pest_management_cost=''
+            disease_control_cost=''
+    except Exception as e:
+        print("Error occured in getProtectionStrategyAndCostUsingSeason method",str(e))
+        protection_strategy='Error'
+        pest_management_cost='Error'
+        disease_control_cost='Error'
+    pSCList =[protection_strategy,pest_management_cost,disease_control_cost] 
+    print("getProtectionStrategyAndCostUsingSeason",pSCList)
+    return jsonify({"pSCList": pSCList})
+
+
+# Function to get protection strategy and cost based on crop and weather condition
+@app.route("/getProtectionStrategyAndCostUsingWeather",methods=['POST'])
+def getProtectionStrategyAndCostUsingWeather():
+    try:
+        excel_file = 'CPS_suddenWeatherChange.xlsx' 
+        
+        weather_condition_df = pd.read_excel(excel_file)
+        crop_name=crop.capitalize()
+        weather_condition = request.form.get("weather_condition")
+        # Filter rows based on crop and weather condition
+        filtered_df = weather_condition_df[(weather_condition_df['Crop'] == crop_name) & (weather_condition_df['Weather Condition'] == weather_condition)]
+
+        if not filtered_df.empty:
+            # Get the first row (assuming there's only one matching row)
+            row = filtered_df.iloc[0]
+
+            # Extract protection strategy and cost values
+            protection_strategy = row['Crop Protection Strategy']
+            pest_management_cost = row['Cost per Acre (Pest Management) (INR)']
+            disease_control_cost = row['Cost per Acre (Disease Control) (INR)']
+        else:
+           protection_strategy=''
+           pest_management_cost=''
+           disease_control_cost=''
+
+    except Exception as e:
+        print("Error occured in getProtectionStrategyAndCostUsingWeather method",str(e))
+        protection_strategy='Error'
+        pest_management_cost='Error'
+        disease_control_cost='Error'
+
+    pSCWList =[protection_strategy,pest_management_cost,disease_control_cost] 
+    print("getProtectionStrategyAndCostUsingWeather",pSCWList)
+    return jsonify({"pSCWList": pSCWList})
 
 
 
