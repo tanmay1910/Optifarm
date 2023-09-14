@@ -1,0 +1,389 @@
+<html>
+
+<head>
+
+	<!-- seo related -->
+	<title>Chatbot Frontend</title>
+
+	<!-- meta related -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<!-- vendor css & style files -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300|Open+Sans:300|Oxygen|Material+Icons"
+		rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	<!-- custom css -->
+</head>
+<style>
+	* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #edeff2;
+	font-family: 'Calibri', 'Roboto', sans-serif;
+}
+
+.row.padded_row,
+.row.padded_row > div {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+/* layout and common global classes */
+/* ---------------------------------------------------------------------- */
+
+.chat_window {
+	border-radius: 10px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+	background-color: #f8f8f8;
+	overflow: hidden;
+}
+
+.top_menu {
+	background-color: #fff;
+	padding: 13px 0px;
+	box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+}
+
+.top_menu .title {
+	text-align: center;
+	color: #337ab7;
+	font-size: 20px;
+}
+
+/* messages inside the chatbox */
+/* ---------------------------------------------------------------------- */
+
+.messages {
+	position: relative;
+	list-style: none;
+	padding: 20px 10px 0 10px;
+	margin: 0;
+	height: 500px;
+	overflow: scroll;
+}
+
+.messages .message {
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 20px;
+	transition: all 0.5s linear;
+	opacity: 0;
+}
+
+.messages .message .avatar {
+	height: 40px;
+	width: 40px;
+	background-size: cover !important;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.messages .message .timestamp {
+	font-size: 10px;
+	font-weight: 300;
+	text-align: right;
+	margin-top: 5px;
+}
+
+.messages .message.appeared {
+	opacity: 1;
+}
+
+.messages .message .text_wrapper {
+	display: inline-block;
+	padding: 20px;
+	border-radius: 6px;
+	min-width: 150px;
+	position: relative;
+}
+
+.messages .message .text_wrapper::after,
+.messages .message .text_wrapper:before {
+	top: 18px;
+	border: solid transparent;
+	content: ' ';
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.messages .message .text_wrapper::after {
+	border-width: 13px;
+	margin-top: 0px;
+}
+
+.messages .message .text_wrapper::before {
+	border-width: 15px;
+	margin-top: -2px;
+}
+
+/* bot message */
+
+.messages .message.left .avatar {
+	float: left;
+	background: url('./img/bot.jpg');
+}
+
+.messages .message.left .text_wrapper {
+	background-color: #f3eeca;
+	margin-left: 20px;
+}
+
+.messages .message.left .text_wrapper::after,
+.messages .message.left .text_wrapper::before {
+	right: 100%;
+	border-right-color: #f3eeca;
+}
+
+.messages .message.left .timestamp {
+	color: #b0742f;
+}
+
+/* user message */
+
+.messages .message.right .avatar {
+	float: right;
+	background: url('./img/guy.jpg');
+}
+
+.messages .message.right .text_wrapper {
+	background-color: #b0d4f3;
+	margin-right: 20px;
+	float: right;
+}
+
+.messages .message.right .text_wrapper::after,
+.messages .message.right .text_wrapper::before {
+	left: 100%;
+	border-left-color: #b0d4f3;
+}
+
+.messages .message.right .timestamp {
+	color: #1a5770;
+}
+
+/* text inpur from user */
+
+.bottom_wrapper {
+	background-color: #fff;
+	padding: 20px;
+	bottom: 0;
+	display: flex;
+}
+
+.bottom_wrapper #msg_input {
+	flex-grow: 1;
+	outline-width: 0;
+	padding: 12px;
+	border: 1px solid #bcbdc0;
+	border-radius: 50px;
+	margin-right: 15px;
+}
+
+.app_button_1 {
+	width: 140px;
+	background-color: #a3d063;
+	border-radius: 50px;
+	cursor: pointer;
+	padding: 12px;
+
+	color: #fff;
+	font-size: 18px;
+	font-weight: 300;
+	text-align: center;
+}
+
+/* faq section | right side */
+/* ---------------------------------------------------------------------- */
+
+.panel-group {
+	margin: 20px;
+}
+
+.panel-heading [data-toggle='collapse']:after {
+	font-family: 'FontAwesome';
+	content: '\f054';
+	float: right;
+	font-size: 18px;
+	line-height: 22px;
+	transition: all 0.2s linear;
+
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
+.panel-heading [data-toggle='collapse'].collapsed:after {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+</style>
+
+<body>
+
+	<div class="container">
+
+		<div class="row padded_row">
+
+			<!-- right side content -->
+			<div class="col-md-7">
+
+				<div class="chat_window">
+
+					<div class="top_menu">
+						<div class="title">ChatBot - OptiFarm</div>
+					</div>
+
+					<!-- dynamically rendered -->
+					<ul class="messages"></ul>
+
+					<!-- input -->
+					<div class="bottom_wrapper">
+						<input id="msg_input" placeholder="Say Hi to begin chat..." />
+						<div id="send_button" class="app_button_1">Send</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- vendor script files -->
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+	</script>
+
+	<!-- custom scripts -->
+	<script>
+		/**
+ * Returns the current datetime for the message creation.
+ */
+function getCurrentTimestamp() {
+	return new Date();
+}
+
+/**
+ * Renders a message on the chat screen based on the given arguments.
+ * This is called from the `showUserMessage` and `showBotMessage`.
+ */
+function renderMessageToScreen(args) {
+	// local variables
+	let displayDate = (args.time || getCurrentTimestamp()).toLocaleString('en-IN', {
+		month: 'short',
+		day: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric',
+	});
+	let messagesContainer = $('.messages');
+
+	// init element
+	let message = $(`
+	<li class="message ${args.message_side}">
+		<div class="text_wrapper">
+			<div class="text">${args.text}</div>
+			<div class="timestamp">${displayDate}</div>
+		</div>
+	</li>
+	`);
+
+	// add to parent
+	messagesContainer.append(message);
+
+	// animations
+	setTimeout(function () {
+		message.addClass('appeared');
+	}, 0);
+	messagesContainer.animate({ scrollTop: messagesContainer.prop('scrollHeight') }, 300);
+}
+
+/**
+ * Displays the user message on the chat screen. This is the right side message.
+ */
+function showUserMessage(message, datetime) {
+	renderMessageToScreen({
+		text: message,
+		time: datetime,
+		message_side: 'right',
+	});
+}
+
+/**
+ * Displays the chatbot message on the chat screen. This is the left side message.
+ */
+function showBotMessage(message, datetime) {
+	renderMessageToScreen({
+		text: message,
+		time: datetime,
+		message_side: 'left',
+	});
+}
+
+/**
+ * Get input from user and show it on screen on button click.
+ */
+$('#send_button').on('click', function (e) {
+	// get and show message and reset input
+	var promptFromUser = $("#msg_input").val();
+	showUserMessage($('#msg_input').val());
+	$('#msg_input').val('');
+		// get the user input from the input element using jQuery
+		console.log(promptFromUser);
+		// check if the user input is not empty
+		if (promptFromUser) {
+			console.log(promptFromUser)
+			// create an AJAX request using jQuery
+			$.ajax({
+				url: "/callGPT", // the URL of the backend route
+				method: "POST", // the HTTP method
+				data: { promptFromUser: promptFromUser }, // the data to send as a form
+				success: function (response) {
+					// handle the response from the backend
+					// get the generatedText name from the response JSON data
+					var generated_textFromGPT = response.generated_textFromGPT;
+					console.log(generated_textFromGPT);
+					showBotMessage(generated_textFromGPT);
+					
+				}
+			});
+		}
+	// show bot message
+	
+	
+});
+
+/**
+ * Returns a random string. Just to specify bot message to the user.
+ */
+function randomstring(length = 300) {
+	let output = JSON.stringify(generated_textFromGPT);
+	return output;
+}
+
+/**
+ * Set initial bot message to the screen for the user.
+ */
+$(window).on('load', function () {
+	showBotMessage('Ask me anything!');
+});
+
+	</script>
+</body>
+
+</html>
