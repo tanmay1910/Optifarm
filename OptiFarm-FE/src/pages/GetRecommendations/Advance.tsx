@@ -41,7 +41,7 @@ export const Advance: React.FC = () => {
                 <Button
                     variant="contained"
                     onClick={() => {
-                        axios.post<Array<string>>('/advance', {
+                        axios.post<Array<string>>('https://localhost/advance', {
                             nitrogen: nitrogenRef.current?.value,
                             phosphorus: phosphorusRef.current?.value,
                             potassium: potassiumRef.current?.value,
