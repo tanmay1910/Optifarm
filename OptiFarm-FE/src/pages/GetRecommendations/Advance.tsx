@@ -45,9 +45,9 @@ export const Advance: React.FC = () => {
                             nitrogen: nitrogenRef.current?.value,
                             phosphorus: phosphorusRef.current?.value,
                             potassium: potassiumRef.current?.value,
-                            temperatureRef: temperatureRef.current?.value,
-                            humidityRef: humidityRef.current?.value,
-                            rainfallRef: rainfallRef.current?.value,
+                            temperature: temperatureRef.current?.value,
+                            humidity: humidityRef.current?.value,
+                            rainfall: rainfallRef.current?.value,
                             ph: String(phValue),
                         }).then((response) => setCrops(response.data));
                     }}
