@@ -17,7 +17,7 @@ import kidneybeans from '../../../assets/crops/kidneybeans.jpg';
 import lentil from '../../../assets/crops/lentil.jpg';
 import maize from '../../../assets/crops/maize.jpg';
 import mango from '../../../assets/crops/mango.jpg';
-import mothbean from '../../../assets/crops/mothbean.jpg';
+import mothbeans from '../../../assets/crops/mothbeans.jpg';
 import muskmelon from '../../../assets/crops/muskmelon.jpg';
 import orange from '../../../assets/crops/orange.jpg';
 import papaya from '../../../assets/crops/papaya.jpg';
@@ -40,7 +40,7 @@ const crops: { [crop: string]: string } = {
   lentil,
   maize,
   mango,
-  mothbean,
+  mothbeans,
   muskmelon,
   orange,
   papaya,

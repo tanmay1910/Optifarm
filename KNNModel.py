@@ -8,24 +8,39 @@ import pandas as pd
 import numpy as np
 import openai
 import os
-from flask import Flask, request, jsonify,render_template
+from flask import Flask, request, jsonify,render_template, make_response
 from sklearn.naive_bayes import GaussianNB
 import csv
 from sklearn.model_selection import train_test_split
+import json
 
-
+from flask_cors import CORS, cross_origin
 
 
 crop=""
 cropList=[]
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 @app.route("/")
 def index():
     return render_template('index.html')
 
-@app.route("/predict",methods=['POST'])
-def predict():
+@app.route("/advance",methods=['POST', "OPTIONS"])
+@cross_origin()
+def advance():
+    if request.method == "OPTIONS": # CORS preflight
+        response = make_response()
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "*")
+        response.headers.add('Access-Control-Allow-Methods', "*")
+        return response
+
+    data = request.get_json()
+
+
     df=pd.read_csv("Crop_recommendation.csv")
     c=df.label.astype('category')
     df['target']=c.cat.codes
@@ -35,13 +50,13 @@ def predict():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     gaussian_naive_bayes_instance=GaussianNB()
     gaussian_naive_bayes_instance.fit(X_train,y_train)
-    N = request.form['Nitrogen']
-    P = request.form['Phosporus']
-    K = request.form['Potassium']
-    temp = request.form['Temperature']
-    humidity = request.form['Humidity']
-    ph = request.form['Ph']
-    rainfall = request.form['Rainfall']
+    N = data['nitrogen']
+    P = data['phosphorus']
+    K = data['potassium']
+    temp = data['temperature']
+    humidity = data['humidity']
+    ph = data['ph']
+    rainfall = data['rainfall']
 
     feature_list = [N, P, K, temp, humidity, ph, rainfall]
     global crop
@@ -60,6 +75,9 @@ def predict():
         print("The First Prediction is ",predictedcrop)
         print("The Second Prediction is ",firstAlternateCrop)
         print("The Third Prediction is ",secondAlternateCrop)
+        response = jsonify({"crops": [predictedcrop, firstAlternateCrop, secondAlternateCrop]})
+        # response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
         crop=predictedcrop
         cropList =[predictedcrop,firstAlternateCrop,secondAlternateCrop]
     except: 
@@ -70,6 +88,7 @@ def predict():
         result = format(crop.upper())
     else:
         result = "Sorry, we could not determine the best crop to be cultivated with the provided data."
+
     return render_template('index.html',result = result)
 
 
