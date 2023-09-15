@@ -1,19 +1,15 @@
 import { InputAdornment, TextField } from "@mui/material";
+import { forwardRef } from "react";
 
 
 type InputWithUnitProps = {
     label: string;
     unit: string;
-    value: number | undefined;
-    onChange: (newValue: number) => void;
 }
 
-export const InputWithUnit: React.FC<InputWithUnitProps> = ({ label, unit, value, onChange }) => {
+export const InputWithUnit = forwardRef<HTMLInputElement, InputWithUnitProps>(({ label, unit }, ref) => {
     return <TextField
-        value={value}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onChange(Number(event.target.value));
-        }}
+        inputRef={ref}
         required
         label={label}
         size="small"
@@ -30,4 +26,4 @@ export const InputWithUnit: React.FC<InputWithUnitProps> = ({ label, unit, value
             },
         }}
     />
-}
+})

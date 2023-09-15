@@ -1,21 +1,29 @@
 import { CropResults } from "./CropResults";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { InputWithUnit } from "../../components/InputWithUnit";
 import { Button, Slider, styled } from "@mui/material";
+import axios from "axios";
 
 export const Advance: React.FC = () => {
-    const [show, setShow] = useState<boolean>(false);
+    const [crops, setCrops] = useState<Array<string>>([]);
+
     const [phValue, setPhValue] = useState<number>(7);
+    const nitrogenRef = useRef<HTMLInputElement | null>(null);
+    const phosphorusRef = useRef<HTMLInputElement | null>(null);
+    const potassiumRef = useRef<HTMLInputElement | null>(null);
+    const temperatureRef = useRef<HTMLInputElement | null>(null);
+    const humidityRef = useRef<HTMLInputElement | null>(null);
+    const rainfallRef = useRef<HTMLInputElement | null>(null);
 
     return <div>
         <div className="col-span-3">
             <div className="grid grid-cols-3 gap-10">
-                <InputWithUnit label="Nitrogen" unit="cm" />
-                <InputWithUnit label="Phosphorus" unit="cm" />
-                <InputWithUnit label="Potassium" unit="cm" />
-                <InputWithUnit label="Temperature" unit="°C" />
-                <InputWithUnit label="Humidity" unit="°C" />
-                <InputWithUnit label="Rainfall" unit="°C" />
+                <InputWithUnit label="Nitrogen" unit="cm" ref={nitrogenRef} />
+                <InputWithUnit label="Phosphorus" unit="cm" ref={phosphorusRef} />
+                <InputWithUnit label="Potassium" unit="cm" ref={potassiumRef} />
+                <InputWithUnit label="Temperature" unit="°C" ref={temperatureRef} />
+                <InputWithUnit label="Humidity" unit="°C" ref={humidityRef} />
+                <InputWithUnit label="Rainfall" unit="°C" ref={rainfallRef} />
                 <div className="flex gap-x-3">
                     <div className="grid place-items-center pb-1 text-gray-500 text-sm">Ph: </div>
                     <PHSlider
@@ -30,12 +38,25 @@ export const Advance: React.FC = () => {
                 </div>
             </div>
             <div className="grid place-items-center mt-10">
-                <Button variant="contained" onClick={() => setShow(true)}>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        axios.post<Array<string>>('/advance', {
+                            nitrogen: nitrogenRef.current?.value,
+                            phosphorus: phosphorusRef.current?.value,
+                            potassium: potassiumRef.current?.value,
+                            temperatureRef: temperatureRef.current?.value,
+                            humidityRef: humidityRef.current?.value,
+                            rainfallRef: rainfallRef.current?.value,
+                            ph: String(phValue),
+                        }).then((response) => setCrops(response.data));
+                    }}
+                >
                     Get Recommendation
                 </Button>
             </div>
         </div>
-        {show && <CropResults />}
+        {crops && <CropResults crops={crops} />}
     </div>
 }
 
