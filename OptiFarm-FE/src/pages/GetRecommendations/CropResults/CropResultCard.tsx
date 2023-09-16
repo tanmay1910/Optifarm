@@ -25,6 +25,8 @@ import pigeonpeas from '../../../assets/crops/pigeonpeas.jpg';
 import pomegranate from '../../../assets/crops/pomegranate.jpg';
 import rice from '../../../assets/crops/rice.jpg';
 import watermelon from '../../../assets/crops/watermelon.jpg';
+import { Select } from '../../../components';
+import { useState } from 'react';
 
 const crops: { [crop: string]: string } = {
   apple,
@@ -58,6 +60,8 @@ type CropResultCardProps = {
 }
 
 export const CropResultCard: React.FC<CropResultCardProps> = ({ name, canGetAlternate = false, onClick }) => {
+  const [factor, setFactor] = useState<string>('');
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
@@ -67,9 +71,17 @@ export const CropResultCard: React.FC<CropResultCardProps> = ({ name, canGetAlte
           image={crops[name]}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {name}
-          </Typography>
+          <div className="flex justify-between">
+            <Typography gutterBottom variant="h5" component="div">
+              {name[0].toUpperCase() + name.slice(1)}
+            </Typography>
+            <Select label="Factor" value={factor} data={Object.keys(companion[name])} onChange={setFactor} maxWidth={150} />
+          </div>
+          {factor &&
+            <Typography>
+              {companion[name][factor]}
+            </Typography>
+          }
         </CardContent>
       </CardActionArea>
       {canGetAlternate &&
@@ -81,4 +93,275 @@ export const CropResultCard: React.FC<CropResultCardProps> = ({ name, canGetAlte
       }
     </Card>
   );
+}
+
+type Companion = {
+  [crop: string]: {
+    [factor: string]: string;
+  }
+}
+
+const companion: Companion = {
+  "rice": {
+    "nitrogen": "Azolla",
+    "green manure": "Azolla",
+    "soil fertility": "Clover",
+    "structure": "Clover",
+    "natural fertilizer": "Fish",
+    "deter pests": "Sesame",
+    "soil nitrogen": "Mungbean",
+    "ground cover": "Watermelon",
+    "soil moisture": "Watermelon",
+    "control algae": "Duckweed",
+    "forage for ducks": "Duckweed",
+    "attract pollinators": "Sunflowers",
+    "provide shade": "Sunflowers",
+    "reduce weed growth": "Taro",
+    "repels pests": "Lemongrass",
+    "adds aroma": "Lemongrass"
+  },
+  "maize": {
+    "nitrogen": "Beans",
+    "ground cover": "Squash",
+    "deter pests": "Potatoes",
+    "attracts beneficial insects": "Sunflowers",
+    "repels beetles": "Cucumber",
+    "repels pests": "Oregano",
+    "improves maize growth": "Marjoram",
+    "attracts pollinators": "Borage",
+    "deters aphids and beetles": "Nasturtium"
+  },
+  "jute": {
+    "deter pests": "Basil",
+    "attracts beneficial insects": "Cilantro",
+    "control nematodes": "Mustard",
+    "attract pollinators": "Sunflowers",
+    "nitrogen": "Beans",
+    "deter jute beetles": "Radishes",
+    "improves jute growth": "Coriander",
+    "deters pests": "Dill",
+    "repels pests": "Mint"
+  },
+  "cotton": {
+    "attract beneficial insects": "Peanuts",
+    "attract pollinators.": "Sunflowers",
+    "provides shade": "Sorghum",
+    "deter pests": "Basil",
+    "nitrogen": "Beans",
+    "provides support": "Sorghum",
+    "deters aphids": "Nasturtium",
+    "attracts beneficial insects": "Cilantro",
+    "improves soil fertility": "Clover"
+  },
+  "coconut": {
+    "shade for young coconuts": "Cocoa",
+    "vines can be grown on coconut trees": "Pepper",
+    "deters coconut pests": "Turmeric",
+    "provides ground cover": "Pineapple",
+    "provides additional canopy cover": "Banana",
+    "provides shade and ground cover": "Papaya",
+    "intercropped in coconut plantations": "Ginger",
+    "control weeds": "Taro",
+    "repels pests": "Lemongrass"
+  },
+  "papaya": {
+    "deter pests": "Marigolds",
+    "deters aphids and beetles": "Nasturtium",
+    "attracts beneficial insects": "Cilantro",
+    "nitrogen": "Beans",
+    "deter beetles": "Radishes",
+    "attract pollinators": "Sunflowers",
+    "provides shade for papaya": "Okra",
+    "control papaya pests": "Mustard",
+    "intercropped with papaya": "Spinach"
+  },
+  "orange": {
+    "attracts pollinators": "Marjoram",
+    "deter citrus pests": "Basil",
+    "deters aphids": "Nasturtium",
+    "repels citrus pests": "Thyme",
+    "deter aphids and mites": "Chives",
+    "provides nutrient-rich mulch": "Comfrey",
+    "attracts beneficial insects": "Dill",
+    "improves soil fertility": "Clover",
+    "deters ants and flies": "Tansy"
+  },
+  "apple": {
+    "deter apple scab": "Chives",
+    "deters aphids and beetles": "Nasturtium",
+    "attracts beneficial insects": "Dill",
+    "helps deter apple pests": "Basil",
+    "improves soil fertility": "Clover",
+    "deter apple pests": "Marigolds",
+    "attracts pollinators": "Calendula",
+    "repels apple pests": "Thyme",
+    "deters apple moths": "Lavender",
+    "deters flying insects": "Tansy"
+  },
+  "muskmelon": {
+    "deters aphids": "Nasturtium",
+    "deter cucumber beetles": "Radishes",
+    "nitrogen": "Beans",
+    "provides support for muskmelon vines": "Corn",
+    "deter common pests": "Marigolds",
+    "improves muskmelon flavor": "Oregano",
+    "attract pollinators": "Sunflowers",
+    "improves muskmelon growth": "Borage",
+    "enhances muskmelon aroma": "Tarragon",
+    "provide ground cover": "Cucumbers"
+  },
+  "watermelon": {
+    "deter watermelon beetles": "Radishes",
+    "nitrogen": "Beans",
+    "deter watermelon pests": "Marigolds",
+    "deters aphids": "Nasturtium",
+    "attract pollinators": "Sunflowers",
+    "provides support for watermelon vines": "Corn",
+    "helps deter watermelon pests": "Basil",
+    "enhances watermelon aroma": "Tarragon",
+    "provide ground cover": "Cucumbers",
+    "repels watermelon pests": "Mint"
+  },
+  "grapes": {
+    "deters grape pests": "Rosemary",
+    "helps deter grape pests": "Basil",
+    "repels pests and improves flavor": "Mint",
+    "deters aphids": "Nasturtium",
+    "improves soil fertility": "Clover",
+    "deter mildew and aphids": "Chives",
+    "repels grape moths": "Lavender",
+    "deter pests and nematodes": "Marigolds",
+    "improves grape flavor": "Oregano",
+    "attract pollinators": "Sunflowers"
+  },
+  "mango": {
+    "helps deter mango pests": "Garlic",
+    "repels insects and enhances flavor": "Basil",
+    "deter mango pests": "Marigolds",
+    "provides ground cover and shade": "Papaya",
+    "deters mango pests": "Tumeric",
+    "natural pesticide": "Neem",
+    "repels pests": "Lemongrass",
+    "helps control weeds": "Taro",
+    "nitrogen": "Beans",
+    "improves mango growth": "Paprika"
+  },
+  "banana": {
+    "provides ground cover": "Sweet Potato",
+    "nitrogen": "Beans",
+    "provides shade and ground cover": "Papaya",
+    "deters banana pests": "Tumeric",
+    "intercropped with bananas": "Ginger",
+    "helps control weeds": "Taro",
+    "provides nutrient-rich mulch": "Comfrey",
+    "deters aphids": "Nasturtium",
+    "can grow on banana trees": "Vanilla",
+    "helps deter banana pests": "Basil"
+  },
+  "pomegranate": {
+    "repels pests and enhances flavor": "Mint",
+    "deter pomegranate pests": "Marigolds",
+    "deters aphids": "Nasturtium",
+    "helps deter pests and enhances growth": "Basil",
+    "improves pomegranate flavor": "Oregano",
+    "repels pests and adds fragrance": "Lavender",
+    "deter aphids and improve flavor": "Chives",
+    "enhances pomegranate aroma": "Tarragon",
+    "nitrogen": "Beans",
+    "attract pollinators": "Sunflowers"
+  },
+  "lentil": {
+    "repels lentil aphids": "Cabbage",
+    "improves lentil growth": "Chickpea",
+    "attract pollinators": "Sunflowers",
+    "attracts beneficial insects": "Cilantro",
+    "deter lentil pests": "Marigolds",
+    "helps control lentil pests": "Mustard",
+    "can be intercropped with lentils": "Spinach",
+    "deter lentil beetles": "Radishes",
+    "nitrogen": "Beans",
+    "improves soil fertility": "Clover"
+  },
+  "blackgram": {
+    "provides support for blackgram": "Maize",
+    "attract pollinators": "Sunflowers",
+    "fixes nitrogen for blackgram": "Cowpea",
+    "improves blackgram flavor": "Coriander",
+    "deter blackgram pests": "Radishes",
+    "helps control aphids": "Mustard",
+    "provide ground cover": "Cucumbers",
+    "improves soil health": "Chickpea",
+    "intercropped with blackgram": "Lentil",
+    "provide shade": "Tamarind"
+  },
+  "mungbean": {
+    "attracts beneficial insects": "Cilantro",
+    "deter mungbean pests": "Marigolds",
+    "deter mungbean beetles": "Radishes",
+    "nitrogen": "Beans",
+    "attract pollinators": "Sunflowers",
+    "deters mungbean pests": "Ginger",
+    "improves mungbean growth": "Coriander",
+    "provide shade": "Tamarind",
+    "provides ground cover": "Papaya",
+    "improves soil health": "Chickpea"
+  },
+  "mothbeans": {
+    "deter mothbean pests": "Marigolds",
+    "attract pollinators": "Sunflowers",
+    "deter mothbean beetles": "Radishes",
+    "intercropped with mothbeans": "Lentil",
+    "improves soil health": "Mungbean",
+    "improves mothbean growth": "Chickpea",
+    "attracts beneficial insects": "Cilantro",
+    "helps control mothbean pests": "Mustard",
+    "provide shade": "Tamarind",
+    "provides ground cover": "Papaya"
+  },
+  "pigeonpeas": {
+    "provides support and shade": "Sorghum",
+    "deter pigeonpea pests": "Marigolds",
+    "attract pollinators": "Sunflowers",
+    "fixes nitrogen for pigeonpeas": "Cowpea",
+    "deters pigeonpea pests": "Tumeric",
+    "helps deter pests": "Basil",
+    "improves soil health": "Chickpea",
+    "attracts beneficial insects": "Cilantro",
+    "fix nitrogen for pigeonpeas": "Beans",
+    "provide shade": "Tamarind"
+  },
+  "kidneybeans": {
+    "attracts beneficial insects": "Cilantro",
+    "deter kidney bean pests": "Marigolds",
+    "helps control aphids": "Mustard",
+    "attract pollinators": "Sunflowers",
+    "deter kidney bean beetles": "Radishes",
+    "intercropped with kidney beans": "Spinach",
+    "provide shade": "Tamarind",
+    "support for kidney beans": "Maize",
+    "deters kidney bean pests": "Tumeric",
+    "helps deter kidney bean pests": "Basil"
+  },
+  "chickpea": {
+    "attracts beneficial insects": "Cilantro",
+    "deter chickpea pests": "Marigolds",
+    "deter chickpea beetles": "Radishes",
+    "fix nitrogen for chickpeas": "Beans",
+    "attract pollinators": "Sunflowers",
+    "helps control aphids": "Mustard",
+    "provide shade": "Tamarind",
+    "enhances chickpea growth": "Paprika",
+    "repels chickpea pests": "Thyme",
+    "helps deter chickpea pests": "Basil"
+  },
+  "coffee": {
+    "can be grown on coffee trees": "Pepper",
+    "provide shade for coffee": "Cacao",
+    "provides additional canopy cover": "Banana",
+    "can provide shade for coffee": "Citrus",
+    "can be intercropped with coffee": "Cardamom",
+    "can be grown under coffee canopy": "Ginger",
+    "provide shade": "Tamarind",
+    "can be grown with coffee": "Macadamia"
+  }
 }

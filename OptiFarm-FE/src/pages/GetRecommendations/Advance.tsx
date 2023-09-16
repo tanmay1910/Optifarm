@@ -50,7 +50,7 @@ export const Advance: React.FC = () => {
               rainfall: rainfallRef.current?.value,
               ph: String(phValue),
             }).then((response) => {
-              setCrops(response.data.crops)
+              setCrops(response.data.crops);
             });
           }}
         >
