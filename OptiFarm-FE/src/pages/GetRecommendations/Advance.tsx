@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { InputWithUnit } from "../../components/InputWithUnit";
 import { Button, Slider, styled } from "@mui/material";
 import axios from "axios";
+import { CropProtectionStrategyDialog } from "./CropProtectionStrategyDialog";
 
 export const Advance: React.FC = () => {
   const [crops, setCrops] = useState<Array<string>>([]);
@@ -14,6 +15,8 @@ export const Advance: React.FC = () => {
   const temperatureRef = useRef<HTMLInputElement | null>(null);
   const humidityRef = useRef<HTMLInputElement | null>(null);
   const rainfallRef = useRef<HTMLInputElement | null>(null);
+
+  const [open, setOpen] = useState<boolean>(false);
 
   return <div>
     <div className="col-span-3">
@@ -37,11 +40,11 @@ export const Advance: React.FC = () => {
           />
         </div>
       </div>
-      <div className="grid place-items-center mt-10">
+      <div className="flex gap-4 items-center justify-center mt-10">
         <Button
           variant="contained"
           onClick={() => {
-            axios.post<Array<string>>('http://127.0.0.1:80/advance', {
+            axios.post<{ crops: Array<string> }>('http://127.0.0.1:80/advance', {
               nitrogen: nitrogenRef.current?.value,
               phosphorus: phosphorusRef.current?.value,
               potassium: potassiumRef.current?.value,
@@ -56,8 +59,22 @@ export const Advance: React.FC = () => {
         >
           Get Recommendation
         </Button>
+        <Button
+          variant="contained"
+          disabled={crops.length === 0}
+          onClick={() => {
+            if (crops.length > 0) {
+              setOpen(true);
+            }
+          }}
+        >
+          Crop protection strategy
+        </Button>
       </div>
     </div>
+    {crops.length > 0 &&
+      <CropProtectionStrategyDialog crops={crops} open={open} onClose={() => setOpen(false)} />
+    }
     {crops && <CropResults crops={crops} />}
   </div>
 }

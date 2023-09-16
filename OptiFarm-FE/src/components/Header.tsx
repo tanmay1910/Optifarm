@@ -24,12 +24,6 @@ export const Header: React.FC = () => {
         >
           Get recommendations
         </Link>
-        <Link
-          to={routes.cropProtectionStrategy}
-          className={classNames("mr-5 hover:text-gray-900 hover:cursor-pointer select-none", pathname === routes.cropProtectionStrategy && '!text-green-500')}
-        >
-          Crop protection strategy
-        </Link>
       </nav>
     </div>
   </header>

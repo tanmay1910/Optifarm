@@ -24,7 +24,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 export const routes = {
     about: '/',
     getRecommendations: '/recommendations',
-    cropProtectionStrategy: '/crop-protection-strategy',
     bot: '/bot'
 }
 
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
     {
         path: routes.getRecommendations,
         element: <Layout><GetRecommendations /></Layout>
-    },
-    {
-        path: routes.cropProtectionStrategy,
-        element: <Layout><div >Hello world</div></Layout>
     },
     {
         path: routes.bot,

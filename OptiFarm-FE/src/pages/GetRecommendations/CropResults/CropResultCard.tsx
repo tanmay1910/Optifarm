@@ -77,11 +77,12 @@ export const CropResultCard: React.FC<CropResultCardProps> = ({ name, canGetAlte
             </Typography>
             <Select label="Factor" value={factor} data={Object.keys(companion[name])} onChange={setFactor} maxWidth={150} />
           </div>
-          {factor &&
-            <Typography>
-              {companion[name][factor]}
-            </Typography>
-          }
+          <Typography className="pt-2">
+            {factor
+              ? <span>To improve the selected factor you can plant <strong><em>{companion[name][factor]}</em></strong> along with the main crop.</span>
+              : 'Select factor to get a companion crop.'
+            }
+          </Typography>
         </CardContent>
       </CardActionArea>
       {canGetAlternate &&
