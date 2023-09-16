@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle } from "@mui/material"
+import { Button, Dialog, DialogTitle } from "@mui/material"
 import { Select } from "../../components";
 import { useState } from "react";
 
@@ -11,12 +11,13 @@ type DialogProps = {
 export const CropProtectionStrategyDialog: React.FC<DialogProps> = ({ open, onClose, crops }) => {
   const [crop, setCrop] = useState<string>(crops[0]);
   const [season, setSeason] = useState<string>('');
+  const [show, setShow] = useState<boolean>(false);
 
   return <Dialog open={open} onClose={onClose}>
     <DialogTitle>
       Crop protection strategy
     </DialogTitle>
-    <div className="h-[30vh] w-[50vh]">
+    <div className="h-[40vh] w-[50vh]">
       <div className="m-2">
         <Select
           label="Crop"
@@ -25,6 +26,7 @@ export const CropProtectionStrategyDialog: React.FC<DialogProps> = ({ open, onCl
           onChange={(newCrop) => {
             setCrop(newCrop);
             setSeason('');
+            setShow(false);
           }}
         />
 
@@ -33,13 +35,34 @@ export const CropProtectionStrategyDialog: React.FC<DialogProps> = ({ open, onCl
       {crop && season &&
         <div className="m-4">
           <div>
-            <strong>Crop Protection Strategy:</strong> {strategy[crop][season]["Crop Protection Strategy"]}.
+            <div>
+              <strong>Crop Protection Strategy:</strong> {strategy[crop][season]["Crop Protection Strategy"]}.
+            </div>
+            <div>
+              <strong>Cost per Acre (Pest Management) (INR): </strong>{strategy[crop][season]["Cost per Acre (Pest Management) (INR)"]}
+            </div>
+            <div>
+              <strong>Cost per Acre (Disease Control) (INR): </strong>{strategy[crop][season]["Cost per Acre (Disease Control) (INR)"]}
+            </div>
           </div>
-          <div>
-            <strong>Cost per Acre (Pest Management) (INR): </strong>{strategy[crop][season]["Cost per Acre (Pest Management) (INR)"]}
-          </div>
-          <div>
-            <strong>Cost per Acre (Disease Control) (INR): </strong>{strategy[crop][season]["Cost per Acre (Disease Control) (INR)"]}
+          <div className="mt-6">
+            <Button variant="contained" onClick={() => setShow(true)} disabled={show}>
+              Sudden weather change
+            </Button>
+            {show && <div className="mt-4">
+              <div>
+                <strong>Weather change: </strong>{weatherChange[crop]["Weather"]}
+              </div>
+              <div>
+                <strong>Protection strategy: </strong> {weatherChange[crop]["Protection_Strategy"]}
+              </div>
+              <div>
+                <strong>Pest management cost: </strong> {weatherChange[crop]["cost_Pest_Management"]}
+              </div>
+              <div>
+                <strong>Disease control cost: </strong> {weatherChange[crop]["cost_Disease_Control"]}
+              </div>
+            </div>}
           </div>
         </div>
       }
@@ -251,5 +274,149 @@ const strategy: Strategy = {
       "Cost per Acre (Pest Management) (INR)": 2100,
       "Cost per Acre (Disease Control) (INR)": 1000
     }
+  }
+}
+
+type WeatherChange = {
+  [crop: string]: {
+    "Weather": string,
+    "Protection_Strategy": string,
+    "cost_Pest_Management": string,
+    "cost_Disease_Control": string
+  }
+}
+
+const weatherChange: WeatherChange = {
+  "rice": {
+    "Weather": "Sudden Cold Snap",
+    "Protection_Strategy": "Provide frost protection through covers or heaters",
+    "cost_Pest_Management": "1500",
+    "cost_Disease_Control": "800"
+  },
+  "maize": {
+    "Weather": "Sudden Heatwave",
+    "Protection_Strategy": "Increase irrigation and shading",
+    "cost_Pest_Management": "1200",
+    "cost_Disease_Control": "600"
+  },
+  "jute": {
+    "Weather": "Sudden Heavy Rainfall",
+    "Protection_Strategy": "Improve drainage and apply fungicides",
+    "cost_Pest_Management": "1300",
+    "cost_Disease_Control": "700"
+  },
+  "cotton": {
+    "Weather": "Sudden Drought",
+    "Protection_Strategy": "Implement drip irrigation and reduce planting density",
+    "cost_Pest_Management": "1400",
+    "cost_Disease_Control": "900"
+  },
+  "coconut": {
+    "Weather": "Sudden Strong Winds",
+    "Protection_Strategy": "Prune and provide windbreaks",
+    "cost_Pest_Management": "1600",
+    "cost_Disease_Control": "1000"
+  },
+  "papaya": {
+    "Weather": "Sudden Hailstorm",
+    "Protection_Strategy": "Protect with hail nets or temporary shelters",
+    "cost_Pest_Management": "1700",
+    "cost_Disease_Control": "1100"
+  },
+  "orange": {
+    "Weather": "Sudden Flooding",
+    "Protection_Strategy": "Improve soil drainage and reduce waterlogging",
+    "cost_Pest_Management": "1400",
+    "cost_Disease_Control": "800"
+  },
+  "apple": {
+    "Weather": "Sudden Early Frost",
+    "Protection_Strategy": "Harvest ripe fruits immediately and provide frost protection",
+    "cost_Pest_Management": "1800",
+    "cost_Disease_Control": "1000"
+  },
+  "muskmelon": {
+    "Weather": "Sudden Pest Outbreak",
+    "Protection_Strategy": "Increase pest monitoring and apply appropriate insecticides",
+    "cost_Pest_Management": "1300",
+    "cost_Disease_Control": "700"
+  },
+  "watermelon": {
+    "Weather": "Sudden Disease Outbreak",
+    "Protection_Strategy": "Apply fungicides and practice crop rotation",
+    "cost_Pest_Management": "1500",
+    "cost_Disease_Control": "800"
+  },
+  "grapes": {
+    "Weather": "Sudden Temperature Drop",
+    "Protection_Strategy": "Provide thermal covers and adjust pruning",
+    "cost_Pest_Management": "1600",
+    "cost_Disease_Control": "900"
+  },
+  "mango": {
+    "Weather": "Sudden Prolonged Rain",
+    "Protection_Strategy": "Improve orchard drainage and reduce excess moisture",
+    "cost_Pest_Management": "1700",
+    "cost_Disease_Control": "1000"
+  },
+  "banana": {
+    "Weather": "Sudden Hailstorm",
+    "Protection_Strategy": "Protect with hail nets and assess damage for rescue treatments",
+    "cost_Pest_Management": "1800",
+    "cost_Disease_Control": "1100"
+  },
+  "pomegranate": {
+    "Weather": "Sudden Heatwave",
+    "Protection_Strategy": "Provide shade and increase irrigation",
+    "cost_Pest_Management": "1400",
+    "cost_Disease_Control": "800"
+  },
+  "lentil": {
+    "Weather": "Sudden Heavy Rainfall",
+    "Protection_Strategy": "Improve field drainage and practice crop rotation",
+    "cost_Pest_Management": "1200",
+    "cost_Disease_Control": "600"
+  },
+  "blackgram": {
+    "Weather": "Sudden Pest Outbreak",
+    "Protection_Strategy": "Increase pest monitoring and apply appropriate insecticides",
+    "cost_Pest_Management": "1300",
+    "cost_Disease_Control": "700"
+  },
+  "mungbean": {
+    "Weather": "Sudden Drought",
+    "Protection_Strategy": "Implement efficient irrigation practices and conserve soil moisture",
+    "cost_Pest_Management": "1400",
+    "cost_Disease_Control": "800"
+  },
+  "mothbeans": {
+    "Weather": "Sudden Heatwave",
+    "Protection_Strategy": "Provide shade and adjust planting density",
+    "cost_Pest_Management": "1300",
+    "cost_Disease_Control": "700"
+  },
+  "pigeonpeas": {
+    "Weather": "Sudden Flooding",
+    "Protection_Strategy": "Improve soil drainage and reduce waterlogging",
+    "cost_Pest_Management": "1500",
+    "cost_Disease_Control": "900"
+  },
+  "kidneybeans": {
+    "Weather": "Sudden Temperature Drop",
+    "Protection_Strategy": "Provide thermal covers and adjust planting density",
+    "cost_Pest_Management": "1600",
+    "cost_Disease_Control": "1000"
+  },
+  "chickpea": {
+    "Weather": "Sudden Pest Outbreak",
+    "Protection_Strategy": "Increase pest monitoring and apply appropriate insecticides",
+    "cost_Pest_Management": "1300",
+    "cost_Disease_Control": "700"
+  },
+  "coffee": {
+    "Weather": "Sudden Early Frost",
+    "Protection_Strategy": "Harvest ripe beans immediately and provide frost protection",
+    "cost_Pest_Management": "1800",
+    "cost_Disease_Control": "1000"
   }
 }
