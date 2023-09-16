@@ -350,7 +350,7 @@ $('#send_button').on('click', function (e) {
 			console.log(promptFromUser)
 			// create an AJAX request using jQuery
 			$.ajax({
-				url: "/callGPT", // the URL of the backend route
+				url: "http://localhost/callGPT", // the URL of the backend route
 				method: "POST", // the HTTP method
 				data: { promptFromUser: promptFromUser }, // the data to send as a form
 				success: function (response) {
