@@ -5,6 +5,7 @@ import { Button, Slider, styled } from "@mui/material";
 import axios from "axios";
 import { CropProtectionStrategyDialog } from "./CropProtectionStrategyDialog";
 import { SERVER_URL } from "../../App";
+import { flushSync } from "react-dom";
 
 export const Advance: React.FC = () => {
   const [crops, setCrops] = useState<Array<string>>([]);
@@ -18,6 +19,7 @@ export const Advance: React.FC = () => {
   const rainfallRef = useRef<HTMLInputElement | null>(null);
 
   const [open, setOpen] = useState<boolean>(false);
+  const [disableGet, setDisableGet] = useState<boolean>(false);
 
   return <div>
     <div className="col-span-3">
@@ -43,6 +45,7 @@ export const Advance: React.FC = () => {
       </div>
       <div className="flex gap-4 items-center justify-center mt-10">
         <Button
+          disabled={disableGet}
           variant="contained"
           onClick={() => {
             axios.post<{ crops: Array<string> }>(`${SERVER_URL}/advance`, {
@@ -55,6 +58,7 @@ export const Advance: React.FC = () => {
               ph: String(phValue),
             }).then((response) => {
               setCrops(response.data.crops);
+              flushSync(() => setDisableGet(true));
             });
           }}
         >
@@ -71,6 +75,27 @@ export const Advance: React.FC = () => {
         >
           Crop protection strategy
         </Button>
+        {disableGet &&
+          <Button onClick={() => {
+            setDisableGet(false);
+            setCrops([]);
+            if (nitrogenRef.current)
+              nitrogenRef.current.value = '';
+            if (phosphorusRef.current)
+              phosphorusRef.current.value = '';
+            if (potassiumRef.current)
+              potassiumRef.current.value = '';
+            if (temperatureRef.current)
+              temperatureRef.current.value = '';
+            if (humidityRef.current)
+              humidityRef.current.value = '';
+            if (rainfallRef.current)
+              rainfallRef.current.value = '';
+            setPhValue(7);
+          }}>
+            Get another recommendation
+          </Button >
+        }
       </div>
     </div>
     {crops.length > 0 &&
