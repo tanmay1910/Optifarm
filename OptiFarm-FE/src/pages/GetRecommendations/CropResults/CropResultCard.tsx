@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActionArea, CardActions, Tooltip } from '@mui/material';
 
 import apple from '../../../assets/crops/apple.jpg';
 import banana from '../../../assets/crops/banana.jpg';
@@ -73,7 +73,16 @@ export const CropResultCard: React.FC<CropResultCardProps> = ({ name, canGetAlte
         <CardContent>
           <div className="flex justify-between">
             <Typography gutterBottom variant="h5" component="div">
-              {name[0].toUpperCase() + name.slice(1)}
+              <div className="flex gap-1">
+                <div>
+                  {name[0].toUpperCase() + name.slice(1)}
+                </div>
+                <Tooltip title={cropInfo[name]}>
+                  <div>
+                    <Info className="h-4 w-4" />
+                  </div>
+                </Tooltip >
+              </div>
             </Typography>
             <Select label="Factor" value={factor} data={Object.keys(companion[name])} onChange={setFactor} maxWidth={150} />
           </div>
@@ -365,4 +374,38 @@ const companion: Companion = {
     "provide shade": "Tamarind",
     "can be grown with coffee": "Macadamia"
   }
+}
+const cropInfo: { [crop: string]: string } = {
+  "rice": "Rice is a staple food for more than half of the world\u2019s population and provides 21% of global human per capita energy and 15% of per capita protein . Rice is also the most important crop to millions of small farmers who grow it on millions of hectares throughout the region, and to the many landless workers who derive income from working on these farms.",
+  "maize": "Maize is a versatile crop that can be used for food, feed, and fuel . Maize is a good source of carbohydrates, fiber, and essential vitamins and minerals such as vitamin C, potassium, and magnesium . Maize is also a good source of antioxidants that can help protect against chronic diseases such as cancer and heart disease .",
+  "jute": "Jute is an eco-friendly crop that is biodegradable and renewable . Jute is a cash crop that provides employment opportunities for millions of people in rural areas . Jute cultivation helps in soil conservation by preventing soil erosion and maintaining soil fertility.",
+  "cotton": "Cotton is a versatile crop that can be used for clothing, bedding, and other textile products . Cotton cultivation provides employment opportunities for millions of people in rural areas . Cottonseed oil is a byproduct of cotton production that can be used for cooking and as a salad dressing .",
+  "coconut": "Coconut cultivation provides employment opportunities for millions of people in rural areas. Coconut oil is a byproduct of coconut production that has many health benefits such as improving heart health, boosting brain function, and aiding digestion 6. Coconut water is another byproduct of coconut production that is rich in electrolytes and can help prevent dehydration .",
+  "papaya": "Papaya is a nutritious fruit that is rich in vitamins A, C, and E, folate, potassium, and fiber. Papaya cultivation provides employment opportunities for millions of people in rural areas. Papaya contains an enzyme called papain that can aid digestion and reduce inflammation.",
+  "orange": "Oranges are a nutritious fruit that are rich in vitamin C, fiber, folate, and potassium . Orange cultivation provides employment opportunities for millions of people in rural areas . Oranges contain flavonoids that have anti-inflammatory properties and can help prevent chronic diseases such as cancer and heart disease .",
+  "apple": "Apples are a nutritious fruit that are rich in fiber, vitamin C, potassium, and antioxidants. Apple cultivation provides employment opportunities for millions of people in rural areas.",
+  "muskmelon": "Muskmelon is a nutritious fruit that is rich in vitamins A and C, potassium, and fiber. Muskmelon cultivation provides employment opportunities for millions of people in rural areas.",
+  "watermelon": "Watermelon is a refreshing and juicy fruit known for its high water content, sweet flavor, and vibrant red or pink flesh. It's a summer favorite, perfect for quenching thirst and providing essential hydration.",
+  "grapes": "Grapes are small, sweet, and versatile fruits that come in various colors, including green, red, and purple. They're enjoyed fresh, used for making wine, and packed with antioxidants, making them a healthy snack choice.",
+  "mango": "Mango Known as the \"King of Fruits,\" mangoes are tropical gems renowned for their sweet and juicy flesh. They are not only delicious but also rich in vitamins, minerals, and antioxidants, making them a nutritious treat.",
+  "banana": "Bananas are a versatile and potassium-packed fruit that provides a quick energy boost. Their high fiber content aids digestion, while the creamy texture and sweet flavor make them a popular snack worldwide",
+  "pomegranate": "Pomegranates are bursting with vibrant, juicy seeds that are loaded with antioxidants. These nutrient-packed fruits are not only delicious but also known for their potential health benefits, including heart health and anti-inflammatory properties.",
+  "lentil": "Lentils are a source of plant-based protein and essential nutrients. They come in various colors, such as green, red, and brown, and are a staple in many cuisines due to their versatility and high nutritional value.",
+  "blackgram": "Blackgram, also known as urad dal, is a protein-rich pulse commonly used in Indian cuisine. It's a key ingredient in dishes like dal makhani and idli, providing essential nutrients and a unique flavor.",
+  "mungbean": "Mungbeans are a type of legume known for their green, cylindrical shape. They are a good source of protein and fiber, making them a nutritious addition to salads, soups, and stir-fries.",
+  "mothbeans": "Mothbeans are small, kidney-shaped legumes often used in Indian cooking. They are rich in protein and iron, making them an important dietary component, especially for vegetarians and vegans.",
+  "pigeonpeas": "Pigeonpeas, also called toor dal or arhar dal, are a staple in Indian cuisine. They are a valuable source of plant-based protein and are used in a wide range of dishes, from soups to curries.",
+  "kidneybeans": "Kidney beans are kidney-shaped legumes that are high in protein and fiber. They are popular in dishes like chili and are a nutritious choice for adding substance and flavor to meals.",
+  "chickpea": "Chickpeas, also known as garbanzo beans, are versatile legumes used in various cuisines. They are packed with protein and fiber and are the primary ingredient in dishes like hummus and falafel.",
+  "coffee": "Coffee, made from roasted coffee beans, is one of the world's most beloved beverages. It contains caffeine, which provides an energy boost, and its complex flavors and aromas make it a cherished daily ritual for many."
+}
+
+const Info: React.FC<{ className: string }> = ({ className }) => {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none" className={className}>
+    <rect width="24" height="24" fill="white" />
+    <circle cx="12" cy="12" r="9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M12 11V17" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M11.75 8V7H12.25V8H11.75Z" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+
 }

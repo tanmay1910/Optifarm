@@ -9,19 +9,21 @@ type SelectProps = {
   data: Array<string>;
   value: string,
   onChange: (newValue: string) => void
+  disabled?: boolean;
   maxWidth?: number
 }
 
-export const Select: React.FC<SelectProps> = ({ label, data, value, onChange, maxWidth }) => {
+export const Select: React.FC<SelectProps> = ({ label, data, value, onChange, maxWidth = 1000, disabled = false }) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value);
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120, maxWidth: maxWidth ?? 1000 }} size="small">
+    <FormControl sx={{ m: 1, minWidth: 120, maxWidth }} size="small">
       <InputLabel>{label}</InputLabel>
       <MaterialSelect
+        disabled={disabled}
         value={value}
         label={label}
         onChange={handleChange}

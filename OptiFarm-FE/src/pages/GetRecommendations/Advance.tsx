@@ -4,6 +4,7 @@ import { InputWithUnit } from "../../components/InputWithUnit";
 import { Button, Slider, styled } from "@mui/material";
 import axios from "axios";
 import { CropProtectionStrategyDialog } from "./CropProtectionStrategyDialog";
+import { SERVER_URL } from "../../App";
 
 export const Advance: React.FC = () => {
   const [crops, setCrops] = useState<Array<string>>([]);
@@ -21,12 +22,12 @@ export const Advance: React.FC = () => {
   return <div>
     <div className="col-span-3">
       <div className="grid grid-cols-3 gap-10">
-        <InputWithUnit label="Nitrogen" unit="cm" ref={nitrogenRef} />
-        <InputWithUnit label="Phosphorus" unit="cm" ref={phosphorusRef} />
-        <InputWithUnit label="Potassium" unit="cm" ref={potassiumRef} />
+        <InputWithUnit label="Nitrogen" unit="" ref={nitrogenRef} />
+        <InputWithUnit label="Phosphorus" unit="" ref={phosphorusRef} />
+        <InputWithUnit label="Potassium" unit="" ref={potassiumRef} />
         <InputWithUnit label="Temperature" unit="°C" ref={temperatureRef} />
-        <InputWithUnit label="Humidity" unit="°C" ref={humidityRef} />
-        <InputWithUnit label="Rainfall" unit="°C" ref={rainfallRef} />
+        <InputWithUnit label="Humidity" unit="%" ref={humidityRef} />
+        <InputWithUnit label="Rainfall" unit="mm" ref={rainfallRef} />
         <div className="flex gap-x-3">
           <div className="grid place-items-center pb-1 text-gray-500 text-sm">Ph: </div>
           <PHSlider
@@ -44,7 +45,7 @@ export const Advance: React.FC = () => {
         <Button
           variant="contained"
           onClick={() => {
-            axios.post<{ crops: Array<string> }>('http://127.0.0.1:80/advance', {
+            axios.post<{ crops: Array<string> }>(`${SERVER_URL}/advance`, {
               nitrogen: nitrogenRef.current?.value,
               phosphorus: phosphorusRef.current?.value,
               potassium: potassiumRef.current?.value,
