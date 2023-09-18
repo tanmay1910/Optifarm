@@ -92,10 +92,8 @@ export const Basic: React.FC = () => {
               onClick={
                 () => {
                   axios.post(`${SERVER_URL}/basic`, {
-                    location,
-                    soilType,
-                    rainfall: rain,
-                    temperature: temp
+                    rainfall: Number(rain),
+                    temperature: Number(temp)
                   }).then((response) => setCrops(response.data.crops));
                 }
               }
@@ -103,9 +101,6 @@ export const Basic: React.FC = () => {
               Get Recommendation
             </Button>
           </div>
-        </div>
-        <div>
-          HeatMap
         </div>
       </div>
       {crops && <CropResults crops={crops} />}

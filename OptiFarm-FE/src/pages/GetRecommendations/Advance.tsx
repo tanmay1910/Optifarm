@@ -24,9 +24,9 @@ export const Advance: React.FC = () => {
   return <div>
     <div className="col-span-3">
       <div className="grid grid-cols-3 gap-10">
-        <InputWithUnit label="Nitrogen" unit="" ref={nitrogenRef} />
-        <InputWithUnit label="Phosphorus" unit="" ref={phosphorusRef} />
-        <InputWithUnit label="Potassium" unit="" ref={potassiumRef} />
+        <InputWithUnit label="Nitrogen" unit="mg" ref={nitrogenRef} />
+        <InputWithUnit label="Phosphorus" unit="mg" ref={phosphorusRef} />
+        <InputWithUnit label="Potassium" unit="mg" ref={potassiumRef} />
         <InputWithUnit label="Temperature" unit="°C" ref={temperatureRef} />
         <InputWithUnit label="Humidity" unit="%" ref={humidityRef} />
         <InputWithUnit label="Rainfall" unit="mm" ref={rainfallRef} />

@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Header } from "./components"
-import { About, GetRecommendations } from "./pages";
+import { About, FAQ, GetRecommendations, Contact } from "./pages";
 import chat from './assets/chat.png';
 
 import {
@@ -42,6 +42,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 export const routes = {
     about: '/',
     getRecommendations: '/recommendations',
+    faq: '/faq',
+    contact: '/contact'
 }
 
 const router = createBrowserRouter([
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
         path: routes.getRecommendations,
         element: <Layout><GetRecommendations /></Layout>
     },
+    {
+        path: routes.faq,
+        element: <Layout><FAQ /></Layout>
+    },
+    {
+        path: routes.contact,
+        element: <Layout><Contact /></Layout>
+    }
 ]);
 
 const queryClient = new QueryClient();

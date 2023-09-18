@@ -17,7 +17,8 @@ export const CropProtectionStrategyDialog: React.FC<DialogProps> = ({ open, onCl
     <DialogTitle>
       Crop protection strategy
     </DialogTitle>
-    <div className="h-[40vh] w-[50vh]">
+    <div className="h-[60vh] w-[35vw] relative">
+      <div className="absolute -top-[55px] right-2 cursor-pointer" onClick={onClose}>x</div>
       <div className="m-2">
         <Select
           label="Crop"

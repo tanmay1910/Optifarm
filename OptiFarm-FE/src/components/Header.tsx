@@ -24,6 +24,18 @@ export const Header: React.FC = () => {
         >
           Get recommendations
         </Link>
+        <Link
+          to={routes.faq}
+          className={classNames("mr-5 hover:text-gray-900 hover:cursor-pointer select-none", pathname === routes.faq && '!text-green-500')}
+        >
+          FAQ
+        </Link>
+        <Link
+          to={routes.contact}
+          className={classNames("mr-5 hover:text-gray-900 hover:cursor-pointer select-none", pathname === routes.contact && '!text-green-500')}
+        >
+          Contact Us
+        </Link>
       </nav>
     </div>
   </header>
