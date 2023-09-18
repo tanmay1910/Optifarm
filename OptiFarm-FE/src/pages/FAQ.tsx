@@ -1,4 +1,7 @@
 export const FAQ = () => {
-  return <div>HI</div>;
+  return  <div>
+Coming Soon !!
+
+        </div>;
 
 }
