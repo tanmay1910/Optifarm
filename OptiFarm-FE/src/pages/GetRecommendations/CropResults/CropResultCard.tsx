@@ -8,7 +8,7 @@ import apple from '../../../assets/crops/apple.jpg';
 import banana from '../../../assets/crops/banana.jpg';
 import blackgram from '../../../assets/crops/blackgram.jpg';
 import chickpea from '../../../assets/crops/chickpea.jpg';
-// import coconut from '../../../assets/crops/coconut.JPG';
+import coconut from '../../../assets/crops/coconut.jpg';
 import coffee from '../../../assets/crops/coffee.jpg';
 import cotton from '../../../assets/crops/cotton.jpg';
 import grapes from '../../../assets/crops/grapes.jpg';
@@ -33,7 +33,7 @@ const crops: { [crop: string]: string } = {
   banana,
   blackgram,
   chickpea,
-  // coconut,
+  coconut,
   coffee,
   cotton,
   grapes,
