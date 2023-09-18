@@ -93,6 +93,64 @@ def advance():
 
 
 
+@app.route("/basic",methods=['POST', "OPTIONS"])
+@cross_origin()
+def basic():
+    if request.method == "OPTIONS": # CORS preflight
+        response = make_response()
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "*")
+        response.headers.add('Access-Control-Allow-Methods', "*")
+        return response
+
+    data = request.get_json()
+
+
+    df=pd.read_csv("Crop_recommendation.csv")
+    c=df.label.astype('category')
+    df['target']=c.cat.codes
+    targets = dict(enumerate(c.cat.categories))
+    y=df.target
+    X=df[['temperature','rainfall']]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+    gaussian_naive_bayes_instance=GaussianNB()
+    gaussian_naive_bayes_instance.fit(X_train,y_train)
+    temp = data['temperature']
+    rainfall = data['rainfall']
+
+    feature_list = [temp, rainfall]
+    global crop
+    global cropList
+    try:
+        X_input = pd.DataFrame(np.array(feature_list)).T
+        gaussian_naive_bayes_instance.predict(X_input)
+        my_prob_predictions=gaussian_naive_bayes_instance.predict_proba(X_input)
+        sorted_classes=np.argsort(my_prob_predictions[0])
+        best_class=sorted_classes[-1]
+        second_best_class=sorted_classes[-2]
+        third_best_class=sorted_classes[-3]
+        predictedcrop=targets[best_class]
+        firstAlternateCrop=targets[second_best_class]
+        secondAlternateCrop=targets[third_best_class]
+        print("The First Prediction is ",predictedcrop)
+        print("The Second Prediction is ",firstAlternateCrop)
+        print("The Third Prediction is ",secondAlternateCrop)
+        response = jsonify({"crops": [predictedcrop, firstAlternateCrop, secondAlternateCrop]})
+        # response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+        crop=predictedcrop
+        cropList =[predictedcrop,firstAlternateCrop,secondAlternateCrop]
+    except: 
+        print ("Exception Occured in predict method")
+        crop=None;
+       
+    if crop is not None:
+        result = format(crop.upper())
+    else:
+        result = "Sorry, we could not determine the best crop to be cultivated with the provided data."
+
+    return render_template('index.html',result = result)
+
 @app.route("/findAlternateCrop",methods=['POST'])
 def findAlternateCrop():
     global cropList
@@ -134,8 +192,10 @@ companionCrop=""
 
 @app.route("/findCompanionCrop",methods=['POST'])
 def findCompanionCrop():
-    predictedcrop = crop 
-    selectedAdditionalFactor = request.form.get("selectedAdditionalFactor")
+    data = request.get_json()
+    selectedAdditionalFactor = data["selectedAdditionalFactor"]
+    predictedcrop = data["crop"] 
+    print(selectedAdditionalFactor)
     global companionCrop
     csv_file = "companion_crop_data.csv"
     if predictedcrop==" ":
@@ -159,7 +219,7 @@ def findCompanionCrop():
           companionCrop=None;
           
     print(companionCrop)      
-    if companionCrop is not None:
+    if companionCrop is not None and companionCrop != "":
       companionCropResult = "To improve the selected factor you can plant {} along with the main crop.".format(companionCrop.upper())
     else:
        companionCropResult = "Sorry, we could not determine the companion crop" 
@@ -169,10 +229,11 @@ def findCompanionCrop():
 @app.route("/getProtectionStrategyAndCostUsingSeason",methods=['POST'])
 def getProtectionStrategyAndCostUsingSeason():
     try:
-        season = request.form.get("season")
+        data = request.get_json()
+        season = data["season"]
+        crop_name = data["crop"]
         excel_file = 'CPS_Season.xlsx'  # Replace with the path to your Excel file
         season_df = pd.read_excel(excel_file)
-        crop_name=crop.capitalize()
         # Filter rows based on crop and season
         filtered_df = season_df[(season_df['Crop'] == crop_name) & (season_df['Season'] == season)]
 
@@ -193,7 +254,7 @@ def getProtectionStrategyAndCostUsingSeason():
         protection_strategy='Error'
         pest_management_cost='Error'
         disease_control_cost='Error'
-    pSCList =[protection_strategy,pest_management_cost,disease_control_cost] 
+    pSCList =[protection_strategy,int(pest_management_cost),int(disease_control_cost)] 
     print("getProtectionStrategyAndCostUsingSeason",pSCList)
     return jsonify({"pSCList": pSCList})
 
