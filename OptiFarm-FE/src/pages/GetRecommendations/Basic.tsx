@@ -2,12 +2,519 @@ import { Select } from "../../components";
 import { CropResults } from "./CropResults";
 import { useState } from "react";
 import { InputWithUnit } from "../../components/InputWithUnit";
-import { Button } from "@mui/material";
+import { Box, Button, Modal, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { SERVER_URL } from "../../App";
+
+const weatherConditions = {
+  "ANDAMAN & NICOBAR ISLANDS": {
+    0: "Warm and humid", 
+    1: "Warm and humid", 
+    2: "Warm and humid", 
+    3: "Hot and humid", 
+    4: "Rainy", 
+    5: "Rainy", 
+    6: "Rainy", 
+    7: "Rainy", 
+    8: "Warm and humid", 
+    9: "Warm", 
+    10: "Warm", 
+    11: "Cool and dry", 
+  },
+  "ARUNACHAL PRADESH": {
+    0: "Cool and dry",
+    1: "Cool and dry",
+    2: "Warm during the day, cool at night",
+    3: "Warm with occasional rain",
+    4: "Mild temperatures",
+    5: "Rainy",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Cool and wet",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "ASSAM & MEGHALAYA": {
+    0: "Cool and dry",
+    1: "Cool and dry",
+    2: "Warm with occasional rain",
+    3: "Warm with high humidity",
+    4: "Rainy",
+    5: "Rainy",
+    6: "Heavy rains",
+    7: "Heavy rains",
+    8: "Mild temperatures",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "NAGA MANI MIZO TRIPURA": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Warm with high humidity",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Heavy rains",
+    7: "Rainy",
+    8: "Mild temperatures",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "SUB HIMALAYAN WEST BENGAL & SIKKIM": {
+    0: "Cool and dry",
+    1: "Cool and dry",
+    2: "Warm during the day, cool at night",
+    3: "Warm with occasional rain",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Heavy rains",
+    7: "Mild temperatures",
+    8: "Mild temperatures",
+    9: "Cool",
+    10: "Cool and dry",
+    11: "Cool and dry",
+  },
+  "GANGETIC WEST BENGAL": {
+    0: "Cool and dry",
+    1: "Cool and dry",
+    2: "Warm with occasional rain",
+    3: "Warm with high humidity",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "ORISSA": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Heavy rains",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "JHARKHAND": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "BIHAR": {
+    0: "Cool and dry",
+    1: "Warm with occasional rain",
+    2: "Warm with high humidity",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "EAST UTTAR PRADESH": {
+    0: "Cool and dry",
+    1: "Warm with occasional rain",
+    2: "Warm with high humidity",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "WEST UTTAR PRADESH": {
+    0: "Cool and dry",
+    1: "Warm with occasional rain",
+    2: "Warm with high humidity",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "UTTARAKHAND": {
+    0: "Cool and dry",
+    1: "Warm with occasional rain",
+    2: "Warm with high humidity",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Mild temperatures",
+    8: "Mild temperatures",
+    9: "Cool",
+    10: "Cool and dry",
+    11: "Cool and dry",
+  },
+  "HARYANA DELHI & CHANDIGARH": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "PUNJAB": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "HIMACHAL PRADESH": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Mild temperatures",
+    8: "Mild temperatures",
+    9: "Cool",
+    10: "Cool and dry",
+    11: "Cool and dry",
+  },
+  "JAMMU & KASHMIR": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Warm with high humidity",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Mild temperatures",
+    8: "Mild temperatures",
+    9: "Cool",
+    10: "Cool and dry",
+    11: "Cool and dry",
+  },
+  "WEST RAJASTHAN": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "EAST RAJASTHAN": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "WEST MADHYA PRADESH": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "EAST MADHYA PRADESH": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "GUJARAT REGION": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "SAURASHTRA & KUTCH": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "KONKAN & GOA": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Warm and humid",
+    10: "Mild temperatures",
+    11: "Cool and dry",
+  },
+  "MADHYA MAHARASHTRA": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Warm and humid",
+    10: "Mild temperatures",
+    11: "Cool and dry",
+  },
+  "MATATHWADA": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Warm and humid",
+    10: "Mild temperatures",
+    11: "Cool and dry",
+  },
+  "VIDARBHA": {
+    0: "Cool and dry",
+    1: "Warm during the day, cool at night",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "CHHATTISGARH": {
+    0: "Cool and dry",
+    1: "Warm with occasional rain",
+    2: "Warm with high humidity",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "COASTAL ANDHRA PRADESH": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "TELANGANA": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "RAYALSEEMA": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "TAMIL NADU": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "COASTAL KARNATAKA": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Warm and humid",
+    10: "Mild temperatures",
+    11: "Cool and dry",
+  },
+  "NORTH INTERIOR KARNATAKA": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "SOUTH INTERIOR KARNATAKA": {
+    0: "Warm and dry",
+    1: "Warm and dry",
+    2: "Warm with occasional rain",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Warm and humid",
+    8: "Warm and humid",
+    9: "Mild temperatures",
+    10: "Cool",
+    11: "Cool and dry",
+  },
+  "KERALA": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Warm and humid",
+    10: "Mild temperatures",
+    11: "Cool and dry",
+  },
+  "LAKSHADWEEP": {
+    0: "Warm and humid",
+    1: "Warm and humid",
+    2: "Warm and humid",
+    3: "Hot and humid",
+    4: "Rainy",
+    5: "Heavy rains",
+    6: "Rainy",
+    7: "Rainy",
+    8: "Warm and humid",
+    9: "Warm and humid",
+    10: "Mild temperatures",
+    11: "Cool and dry",
+  },
+};
 
 export const Basic: React.FC = () => {
   const [location, setLocation] = useState<string>('');
@@ -15,9 +522,11 @@ export const Basic: React.FC = () => {
   const [rain, setRain] = useState<string>('');
   const [temp, setTemp] = useState<string>('');
   const [crops, setCrops] = useState<Array<string>>([]);
-
   const [startDate, setStartDate] = useState<null | Dayjs>(null);
   const [endDate, setEndDate] = useState<null | Dayjs>(null);
+  const [open, setOpen] = useState(false);
+  const [alertData, setAlertData] = useState<{ month: string, condition: string }[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const updateRainfall = (startDate: Dayjs | null, endDate: Dayjs | null) => {
     if (!startDate || !endDate) return;
@@ -46,67 +555,148 @@ export const Basic: React.FC = () => {
     setTemp(String((t1 + t2) / 2));
   }
 
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
-  return <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <div>
-      <div className="grid grid-cols-5 gap-4">
-        <div className="col-span-3">
-          <div className="grid grid-cols-2 gap-10">
-            <Select data={Object.keys(locations)} label="Location" value={location} onChange={(loc) => {
-              setLocation(loc);
-              setSoilType(locations[loc]);
-              updateRainfall(startDate, endDate);
-              updateTemp(startDate, endDate);
-            }} />
-            <div className="flex gap-x-4">
-              <DatePicker label="Start month" views={['month']} onChange={(d) => {
-                setStartDate(d);
-                updateRainfall(d, endDate);
-                updateTemp(d, endDate);
-              }} value={startDate} />
-              <DatePicker label="End month" views={['month']} disabled={startDate == null} onChange={(d) => {
-                setEndDate(d);
-                updateRainfall(startDate, d);
-                updateTemp(startDate, d);
-              }} value={endDate}
-                shouldDisableDate={(date) => {
-                  if (startDate)
-                    return date <= startDate;
-                  return false;
-                }}
-              />
-            </div>
-            <div className="grid grid-cols-3 gap-2 col-span-3">
-              <div className="pt-2">
-                <InputWithUnit label="Rainfall" unit="mm" disabled value={rain} />
+  const handleOpen = () => {
+    if (!startDate || !endDate) {
+      setErrorMessage("Please select start and end month to get weather alert.");
+      setAlertData([]);
+      setOpen(true);
+      return;
+    }
+
+    const alertEntries: { month: string, condition: string }[] = [];
+    const startMonth = dayjs(startDate).month();
+    const endMonth = dayjs(endDate).month();
+    
+    for (let month = startMonth; month <= endMonth; month++) {
+      const monthName = dayjs().month(month).format('MMMM');
+      const condition = weatherConditions[location][month];
+      alertEntries.push({ month: monthName, condition });
+    }
+
+    setAlertData(alertEntries);
+    setErrorMessage('');
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div>
+        <div className="grid grid-cols-5 gap-4">
+          <div className="col-span-3">
+            <div className="grid grid-cols-2 gap-10">
+              <Select data={Object.keys(locations)} label="Location" value={location} onChange={(loc) => {
+                setLocation(loc);
+                setSoilType(locations[loc]);
+                updateRainfall(startDate, endDate);
+                updateTemp(startDate, endDate);
+              }} />
+              <div className="flex gap-x-4">
+                <DatePicker label="Start month" views={['month']} onChange={(d) => {
+                  setStartDate(d);
+                  updateRainfall(d, endDate);
+                  updateTemp(d, endDate);
+                }} value={startDate} />
+                <DatePicker label="End month" views={['month']} disabled={startDate == null} onChange={(d) => {
+                  setEndDate(d);
+                  updateRainfall(startDate, d);
+                  updateTemp(startDate, d);
+                }} value={endDate}
+                  shouldDisableDate={(date) => {
+                    if (startDate)
+                      return date <= startDate;
+                    return false;
+                  }}
+                />
               </div>
-              <Select data={Object.values(locations)} label="Soil Type" value={soilType} onChange={() => { }} disabled />
-              <div className="pt-2">
-                <InputWithUnit label="Temperature" unit="°C" value={temp} disabled />
+              <div className="grid grid-cols-3 gap-2 col-span-3">
+                <div className="pt-2">
+                  <InputWithUnit label="Rainfall" unit="mm" disabled value={rain} />
+                </div>
+                <Select data={Object.values(locations)} label="Soil Type" value={soilType} onChange={() => { }} disabled />
+                <div className="pt-2">
+                  <InputWithUnit label="Temperature" unit="°C" value={temp} disabled />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="grid place-items-center mt-10">
-            <Button
-              variant="contained"
-              onClick={
-                () => {
+            <div className="flex justify-center">
+              <Button
+                variant="contained"
+                onClick={() => {
                   axios.post(`${SERVER_URL}/basic`, {
                     rainfall: Number(rain),
                     temperature: Number(temp)
                   }).then((response) => setCrops(response.data.crops));
-                }
-              }
-            >
-              Get Recommendation
-            </Button>
+                }}
+              >
+                Get Recommendation
+              </Button>
+              <Button
+                style={{ marginLeft: "10px" }}
+                variant="outlined"
+                onClick={handleOpen}
+              >
+                Weather Alert
+              </Button>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                    Weather Forecast
+                  </Typography>
+                  {errorMessage ? (
+                    <Typography color="error">{errorMessage}</Typography>
+                  ) : (
+                    <TableContainer>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Month</TableCell>
+                            <TableCell>Weather Condition</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {alertData.map((entry, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{entry.month}</TableCell>
+                              <TableCell>{entry.condition}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  )}
+                </Box>
+              </Modal>
+            </div>
           </div>
         </div>
+
+        {crops && <CropResults crops={crops} />}
       </div>
-      {crops && <CropResults crops={crops} />}
-    </div >
-  </LocalizationProvider>
-}
+    </LocalizationProvider>
+  );
+};
+
+
+
 
 const locations: { [location: string]: string } = {
   "ANDAMAN & NICOBAR ISLANDS": "Coastal Alluvial soils",

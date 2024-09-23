@@ -33,10 +33,6 @@ export const About: React.FC = () => {
           <li><strong>Raunak Jaiswal</strong></li>
           <li><strong>Anushka Suryawanshi</strong></li>
           <li><strong>Pooja Pandey</strong></li>
-          <li><strong>Shuv Pranjal</strong></li>
-          <li><strong>Mohit Mundra</strong></li>
-          <li><strong>Ashwini Jadhav</strong></li>
-          <li><strong>Gandharv Sachdeva</strong></li>
           <li><strong>Geetanjali Shaligram</strong></li>
         </ul>
       </div>
